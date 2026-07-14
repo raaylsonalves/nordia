@@ -3220,7 +3220,7 @@
     .cs-email-fb {
       font-size: 11px;
       color: rgba(148, 163, 184, 0.5);
-      margin-top: -20px;
+      margin-top: 6px;
       margin-bottom: 0;
       opacity: 0;
       transition: opacity .4s;
@@ -3490,38 +3490,7 @@
       <span class="cs-copy">&copy; <span id="cs-year"></span> NORDIA Tech</span>
     </div>
   </div>
-  <script>document.getElementById('cs-year').textContent = new Date().getFullYear();
-
-    (function () {
-      function e() {
-        var n = document.getElementById('csParticles'); if (!n || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; var t = n.getContext('2d'); var i, a; function r() { i = n.width = window.innerWidth; a = n.height = window.innerHeight } r(); window.addEventListener('resize', r); var o = 120; var l = []; for (var u = 0; u < o; u++) { l.push({ x: Math.random() * i, y: Math.random() * a, r: Math.random() * 2 + .5, dx: (Math.random() - .5) * .25, dy: -(Math.random() * .15 + .08), o: Math.random() * .4 + .15, h: Math.random() > .35 }) } function s() { t.clearRect(0, 0, i, a); for (var e = 0; e < o; e++) { var n = l[e]; n.x += n.dx; n.y += n.dy; if (n.y < -5) { n.y = a + 5; n.x = Math.random() * i } if (n.x < -5 || n.x > i + 5) { n.x = Math.random() * i } t.beginPath(); t.arc(n.x, n.y, n.r, 0, Math.PI * 2); t.fillStyle = n.h ? 'rgba(255,102,0,' + n.o + ')' : 'rgba(255,255,255,' + (n.o * .4) + ')'; t.fill() } requestAnimationFrame(s) } s()
-        var btn = document.getElementById('csEmailBtn'), field = document.getElementById('csEmail'), fb = document.getElementById('csEmailFb'), re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (btn) btn.addEventListener('click', function () {
-          var val = field.value.trim();
-          if (!re.test(val)) { field.style.borderColor = '#FF5F56'; field.focus(); return }
-          field.style.borderColor = '';
-          btn.textContent = 'Enviando...'; btn.disabled = true;
-          btn.style.opacity = '.5';
-          var x = new XMLHttpRequest();
-          x.open('POST', 'https://api.web3forms.com/submit');
-          x.setRequestHeader('Content-Type', 'application/json');
-          x.onload = function () {
-            btn.textContent = '✓ Enviado';
-            btn.style.opacity = '.7';
-            fb.textContent = 'Recebemos seu interesse! Entraremos em contato.';
-            fb.style.opacity = '1';
-          };
-          x.onerror = function () {
-            btn.textContent = 'Avise-me'; btn.disabled = false;
-            btn.style.opacity = '1';
-            fb.textContent = 'Erro de rede. Tente novamente.';
-            fb.style.opacity = '1';
-          };
-          x.send(JSON.stringify({ access_key: '37002b5f-a65b-4095-90a5-4bbbcb28beff', email: val, subject: 'Novo lead - Em breve NORDIA', from_name: 'Lead via site' }));
-        });
-        if (field) field.addEventListener('input', function () { field.style.borderColor = ''; });
-      }) ();
-  </script>
+  <script src="assets/js/main.js"></script>
   <div id="original-content" style="display:none">
     <div class="progress" id="progress"></div>
     <div class="toast" id="toast"></div>
