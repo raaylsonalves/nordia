@@ -71,11 +71,13 @@ function Card({
     CARD_WIDTH + (totalCards - 1) * (CARD_WIDTH - CARD_OVERLAP);
   const expandedCenterOffset = totalExpandedWidth / 2;
 
-  const collapsed = {
-    x: index * 10 - centerOffset,
-    y: index * 2,
-    rotate: reducedMotion ? 0 : index * 1.5,
-  };
+  const collapsed = stackVertically
+    ? { x: 0, y: index * 6, rotate: 0 }
+    : {
+        x: index * 10 - centerOffset,
+        y: index * 2,
+        rotate: reducedMotion ? 0 : index * 1.5,
+      };
 
   // Below `stackVertically` the fan would run off a phone screen and clip the
   // contact details, so the cards expand into a column instead of a row.
@@ -104,13 +106,15 @@ function Card({
           : { type: "spring", stiffness: 260, damping: 30 }
       }
       style={{
-        width: CARD_WIDTH,
+        // On phones the card fills the column instead of sitting at a fixed
+        // 300px, which left it cramped against the viewport edges.
+        width: stackVertically ? "100%" : CARD_WIDTH,
         height: CARD_HEIGHT,
         // Absolutely positioned children with no inset resolve to the container's
         // left edge, so upstream's centre-relative offsets were measured from the
         // wrong origin and the fan collapsed onto itself. Anchor to the centre.
-        left: "50%",
-        marginLeft: -CARD_WIDTH / 2,
+        left: stackVertically ? 0 : "50%",
+        marginLeft: stackVertically ? 0 : -CARD_WIDTH / 2,
       }}
       className={cn(
         "absolute flex flex-col justify-between",
@@ -162,7 +166,14 @@ export default function CardStack({
   return (
     <div className={cn("flex flex-col items-center gap-8", className)}>
       <div
-        className="relative flex w-full items-center justify-center transition-[height] duration-500"
+        className={cn(
+          "relative flex w-full justify-center transition-[height] duration-500",
+          // Absolute children take their static position from the flex
+          // alignment. Centred, the vertical stack starts at the container's
+          // middle and the `y` offsets push it out the bottom, leaving a dead
+          // gap above. Top-align whenever the cards stack downwards.
+          isExpanded && stackVertically ? "items-start" : "items-center",
+        )}
         style={{
           height:
             isExpanded && stackVertically
