@@ -1,0 +1,141 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  NORDIA — design tokens
+  Palette sampled directly from references/logo_new_nordia.jpeg.
+  The mark is a two-tone split "N": one half light, one half dark, on orange.
+  That split is the whole visual language here — "antes / depois",
+  "manual / automatizado". Reuse it, don't decorate around it.
+*/
+@theme {
+  /* brand */
+  --color-flame-50: #fff4ed;
+  --color-flame-100: #ffe6d5;
+  --color-flame-200: #feccaa;
+  --color-flame-300: #fda874;
+  --color-flame-400: #fb793c;
+  --color-flame-500: #f74b01; /* primary — sampled from the logo */
+  --color-flame-600: #e83e00;
+  --color-flame-700: #c02d02;
+  --color-flame-800: #98260b;
+  --color-flame-900: #7a220c;
+
+  /* ink — the dark half of the mark */
+  --color-ink-950: #0a0a0a;
+  --color-ink-900: #121110;
+  --color-ink-800: #1c1a19;
+  --color-ink-700: #292625;
+  --color-ink-600: #3d3937;
+  --color-ink-400: #6f6866;
+  --color-ink-300: #9a9391;
+
+  /* paper — the light half of the mark */
+  --color-paper: #f5f4f3;
+  --color-paper-dim: #e8e5e3;
+
+  --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* the mark's diagonal, reused as the site's one signature angle */
+  --nordia-shear: -18deg;
+}
+
+:root {
+  --background: var(--color-paper);
+  --foreground: var(--color-ink-900);
+  --muted: var(--color-ink-400);
+  --surface: #ffffff;
+  --border: rgb(18 17 16 / 0.10);
+}
+
+.dark {
+  --background: var(--color-ink-950);
+  --foreground: var(--color-paper);
+  --muted: var(--color-ink-300);
+  --surface: var(--color-ink-900);
+  --border: rgb(245 244 243 / 0.12);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-flame-500);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  /* Headline sizing that stays readable from 360px up without a dozen breakpoints. */
+  .text-display {
+    font-family: var(--font-display);
+    /* the reference sets its headlines very heavy and very tight */
+    font-weight: 800;
+    letter-spacing: -0.045em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  /*
+    Eyebrow treatment lifted from the reference post: uppercase, wide tracking,
+    prefixed with a "//" marker. The marker is decorative, so it is generated
+    rather than typed into the copy — screen readers skip it and the text stays
+    clean for translation.
+  */
+  .eyebrow {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    font-size: 0.75rem;
+  }
+
+  .eyebrow::before {
+    content: "// ";
+    opacity: 0.6;
+  }
+
+  .rule-flame {
+    background-image: linear-gradient(
+      90deg,
+      var(--color-flame-500),
+      var(--color-flame-500) 40%,
+      transparent
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  /*
+    Motion writes its keyframes as inline styles, so overriding them needs
+    !important. Doing this here rather than branching on useReducedMotion()
+    in the components keeps server and client markup identical.
+  */
+  [data-motion] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}

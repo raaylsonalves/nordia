@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>NORDIA — abertura de marca</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <!-- Space Grotesk is not in the producer's auto-resolved font list, so this
+         <link> has to stay: it is what makes the compiler fetch the family and
+         inject deterministic @font-face rules. Removing it fails lint with
+         font_family_without_font_face. The "google_fonts_import" warning that
+         remains is expected and benign — the fetch is cached, not per-render. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --flame: #f74b01;
+        --ink: #121110;
+        --paper: #f5f4f3;
+      }
+
+      body {
+        margin: 0;
+        background: var(--ink);
+        font-family: "Space Grotesk", Inter, system-ui, sans-serif;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+
+      /* Scene fill lives on a full-bleed child, never on #root itself —
+         the producer can drop the root's own background and render black. */
+      .bg {
+        position: absolute;
+        inset: 0;
+        background: var(--flame);
+      }
+
+      .clip {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+      }
+
+      /* the mark's own diagonal, enlarged into a background field */
+      .rake {
+        position: absolute;
+        inset: -20%;
+        background-image: repeating-linear-gradient(
+          108deg,
+          #000 0 3px,
+          transparent 3px 120px
+        );
+        opacity: 0.07;
+      }
+
+      .mark {
+        width: 420px;
+        height: 543px;
+        display: block;
+        overflow: visible;
+      }
+
+      .wordmark {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        display: block;
+        width: 900px;
+        margin-left: -450px;
+        margin-top: 300px;
+        text-align: center;
+        color: var(--paper);
+        font-size: 96px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-indent: 0.18em;
+      }
+
+      .line {
+        display: block;
+        width: 1400px;
+        text-align: center;
+        color: var(--paper);
+        font-size: 86px;
+        font-weight: 700;
+        line-height: 1.12;
+        letter-spacing: -0.02em;
+      }
+
+      .line .accent {
+        color: var(--ink);
+      }
+
+      .kicker {
+        display: block;
+        width: 1400px;
+        text-align: center;
+        /* solid, not translucent — alpha over the flame background drops
+           this below the 3:1 contrast floor */
+        color: var(--paper);
+        font-size: 34px;
+        font-weight: 500;
+        letter-spacing: 0.3em;
+        text-indent: 0.3em;
+        text-transform: uppercase;
+      }
+
+      .stack {
+        position: relative;
+        display: grid;
+        justify-items: center;
+        gap: 44px;
+      }
+
+      .contact {
+        display: block;
+        width: 1400px;
+        text-align: center;
+        color: var(--paper);
+        font-size: 38px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-width="1920"
+      data-height="1080"
+      data-duration="9"
+    >
+      <div class="bg"></div>
+      <div class="rake"></div>
+
+      <!-- SCENE 1 — the two halves lock together -->
+      <section
+        id="scene-mark"
+        class="clip"
+        data-start="0"
+        data-duration="4"
+        data-track-index="1"
+      >
+        <div class="stack">
+          <svg
+            id="mark"
+            class="mark"
+            viewBox="0 0 320 414"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              id="half-light"
+              d="M0 4L168 103.6L168 169.8L84 115.8L84 346.1L0 414Z"
+              fill="#f5f4f3"
+            />
+            <path
+              id="half-dark"
+              d="M320 0L190 82.4L190 246.9L125 204.7L125 276.9L320 412.8Z"
+              fill="#121110"
+            />
+          </svg>
+          <span id="wordmark" class="wordmark">NORDIA</span>
+        </div>
+      </section>
+
+      <!-- SCENE 2 — the promise -->
+      <section
+        id="scene-line"
+        class="clip"
+        data-start="4"
+        data-duration="3"
+        data-track-index="1"
+      >
+        <div class="stack">
+          <span id="line-a" class="line">
+            Seu negócio não precisa de mais tecnologia.
+          </span>
+          <span id="line-b" class="line accent">
+            Precisa da tecnologia certa.
+          </span>
+        </div>
+      </section>
+
+      <!-- SCENE 3 — signature -->
+      <section
+        id="scene-end"
+        class="clip"
+        data-start="7"
+        data-duration="2"
+        data-track-index="1"
+      >
+        <div class="stack">
+          <span id="kicker" class="kicker">Tecnologia com propósito</span>
+          <span id="end-line" class="line">Feita para o seu negócio.</span>
+          <span id="contact" class="contact">nordiatech.com.br</span>
+        </div>
+      </section>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Initial states are set inside fromTo, never as CSS transforms —
+      // a CSS transform plus a tween on the same property fails lint.
+      tl.fromTo(
+        "#half-light",
+        { x: -260, opacity: 0 },
+        { x: 0, opacity: 1, duration: 1.1, ease: "power4.out" },
+        0.2,
+      )
+        .fromTo(
+          "#half-dark",
+          { x: 260, opacity: 0 },
+          { x: 0, opacity: 1, duration: 1.1, ease: "power4.out" },
+          0.2,
+        )
+        // a single settle beat once the halves meet
+        .fromTo(
+          "#mark",
+          { scale: 1 },
+          { scale: 1.04, duration: 0.22, ease: "power2.out" },
+          1.25,
+        )
+        .to("#mark", { scale: 1, duration: 0.5, ease: "power2.inOut" }, 1.47)
+        .fromTo(
+          "#wordmark",
+          { y: 36, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
+          1.35,
+        );
+
+      // Scene 2
+      tl.fromTo(
+        "#line-a",
+        { y: 44, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.65, ease: "power3.out" },
+        4.15,
+      ).fromTo(
+        "#line-b",
+        { y: 44, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.65, ease: "power3.out" },
+        4.5,
+      );
+
+      // Scene 3
+      tl.fromTo(
+        "#kicker",
+        { y: 24, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" },
+        7.1,
+      )
+        .fromTo(
+          "#end-line",
+          { y: 32, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.55, ease: "power3.out" },
+          7.3,
+        )
+        .fromTo(
+          "#contact",
+          { opacity: 0 },
+          { opacity: 1, duration: 0.5, ease: "power2.out" },
+          7.7,
+        );
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
