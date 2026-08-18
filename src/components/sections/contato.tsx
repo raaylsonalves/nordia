@@ -41,8 +41,8 @@ const CANAIS = [
   {
     icone: Instagram,
     rotulo: "Instagram",
-    valor: "@nordia.solucoes",
-    href: "https://www.instagram.com/nordia.solucoes/",
+    valor: "@nordia.tech",
+    href: "https://www.instagram.com/nordia.tech/",
   },
 ];
 
