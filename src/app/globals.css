@@ -68,6 +68,11 @@
     scroll-behavior: smooth;
   }
 
+  /* The header is fixed, so an anchor would otherwise land underneath it. */
+  section[id] {
+    scroll-margin-top: 5.5rem;
+  }
+
   body {
     background: var(--background);
     color: var(--foreground);

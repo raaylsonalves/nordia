@@ -1,7 +1,22 @@
 "use client";
 
+/**
+ * Morphic Navbar — Kokonut UI (MIT), adapted for NORDIA.
+ *
+ * @license: MIT
+ * @website: https://kokonutui.com
+ *
+ * Changes from upstream:
+ *  - `href={path}` instead of a hardcoded `href="#"`. Upstream renders every
+ *    item pointing at "#", so no link in the navbar ever navigates; `path` was
+ *    only ever used as the active-state key.
+ *  - plain <a> instead of next/link — these are same-page hash anchors, not
+ *    route changes.
+ *  - `activePath` can be driven from outside, so the highlight can follow the
+ *    scroll position instead of only responding to clicks.
+ */
+
 import clsx from "clsx";
-import Link from "next/link";
 import { useState } from "react";
 
 interface NavItem {
@@ -12,6 +27,8 @@ interface MorphicNavbarProps {
   items?: Record<string, NavItem>;
   defaultPath?: string;
   className?: string;
+  /** When provided, the component is controlled by the parent. */
+  activePath?: string;
 }
 
 const DEFAULT_NAV_ITEMS: Record<string, NavItem> = {
@@ -25,8 +42,10 @@ export function MorphicNavbar({
   items = DEFAULT_NAV_ITEMS,
   defaultPath = "/",
   className,
+  activePath: controlledPath,
 }: MorphicNavbarProps) {
-  const [activePath, setActivePath] = useState(defaultPath);
+  const [internalPath, setInternalPath] = useState(defaultPath);
+  const activePath = controlledPath ?? internalPath;
 
   const isActiveLink = (path: string) => {
     if (path === "/") {
@@ -48,9 +67,9 @@ export function MorphicNavbar({
               index < array.length - 1 ? array[index + 1][0] : null;
 
             return (
-              <Link
+              <a
                 className={clsx(
-                  "flex items-center justify-center bg-black p-1.5 px-4 text-sm text-white transition-all duration-300 dark:bg-white dark:text-black",
+                  "flex items-center justify-center bg-ink-900 p-1.5 px-4 text-sm text-paper transition-all duration-300",
                   isActive
                     ? "mx-2 rounded-xl font-semibold text-sm"
                     : clsx(
@@ -60,12 +79,12 @@ export function MorphicNavbar({
                           "rounded-r-xl"
                       )
                 )}
-                href="#"
+                href={path}
                 key={path}
-                onClick={() => setActivePath(path)}
+                onClick={() => setInternalPath(path)}
               >
                 {name}
-              </Link>
+              </a>
             );
           })}
         </div>

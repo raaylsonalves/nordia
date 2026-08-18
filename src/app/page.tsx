@@ -4,6 +4,7 @@ import { Problema } from "@/components/sections/problema";
 import { Solucoes } from "@/components/sections/solucoes";
 import { Proposito } from "@/components/sections/proposito";
 import { Contato } from "@/components/sections/contato";
+import { ChatBox } from "@/components/chat-box";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         <Contato />
       </main>
       <Footer />
+      <ChatBox />
     </>
   );
 }
