@@ -28,7 +28,7 @@ const FaultyTerminal = dynamic(
 );
 
 /** How long one field holds the screen before the next takes over. */
-const HOLD_MS = 22_000;
+const HOLD_MS = 9_000;
 
 const FIELDS = [
   function Ether() {

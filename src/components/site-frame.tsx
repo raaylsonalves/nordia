@@ -13,10 +13,10 @@ import { cn } from "@/lib/utils";
  * The chrome that wraps all three pages: the pill nav, the page counter, the
  * grain, and the transition between routes.
  *
- * The transition never reverses. A single sheet — sheared to the mark's own
- * angle, so its edge is the brand's diagonal — rises from below, covers the
- * screen while the route swaps underneath, then keeps rising off the top. One
- * continuous upward gesture, carrying the number of the page you are going to.
+ * The transition never reverses. A translucent veil — tilted to the mark's own
+ * angle, so its edge is the brand's diagonal — rises from below, dims the page
+ * while the route swaps underneath, then keeps rising off the top. One
+ * continuous upward gesture: you half-see through it the whole way.
  *
  * It runs on the Web Animations API rather than CSS classes: the route change
  * is sequenced off `finished`, so the swap can never be seen even if a build
@@ -30,8 +30,9 @@ const PAGES = [
 ] as const;
 
 const SCRAMBLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&/";
-const RISE_MS = 520;
-const EASE = "cubic-bezier(.4,0,.2,1)";
+const RISE_MS = 700;
+// gentler than the usual UI curve: this one is atmosphere, not feedback
+const EASE = "cubic-bezier(.33,0,.15,1)";
 
 /** Nav label that shuffles its letters before settling, on hover. */
 function ScrambleLabel({ text }: { text: string }) {
@@ -72,12 +73,6 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
   const riser = useRef<HTMLDivElement>(null);
   const grain = useRef<HTMLCanvasElement>(null);
   const busy = useRef(false);
-  const [alvo, setAlvo] = useState(1);
-
-  const index = Math.max(
-    0,
-    PAGES.findIndex((p) => p.href === pathname),
-  );
 
   const navigate = async (href: string) => {
     if (href === pathname || busy.current) return;
@@ -90,24 +85,36 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
     }
 
     busy.current = true;
-    setAlvo(PAGES.findIndex((p) => p.href === href) + 1);
 
     const opts = { duration: RISE_MS, easing: EASE, fill: "forwards" as const };
-    await sheet.animate([{ translate: "0 120%" }, { translate: "0 0%" }], opts)
-      .finished;
+    await sheet.animate(
+      [
+        { translate: "0 110%", opacity: 0 },
+        { translate: "0 40%", opacity: 1, offset: 0.45 },
+        { translate: "0 0%", opacity: 1 },
+      ],
+      opts,
+    ).finished;
 
     router.push(href);
     // one beat for the incoming route to paint under the cover
     await new Promise((r) => window.setTimeout(r, 140));
 
-    await sheet.animate([{ translate: "0 0%" }, { translate: "0 -120%" }], opts)
-      .finished;
+    await sheet.animate(
+      [
+        { translate: "0 0%", opacity: 1 },
+        { translate: "0 -60%", opacity: 1, offset: 0.55 },
+        { translate: "0 -110%", opacity: 0 },
+      ],
+      opts,
+    ).finished;
 
     // cancel first so no fill survives, then re-arm the resting position by
     // hand — relying on React to restore the inline style left the sheet
     // parked over the page after the route swapped it
     sheet.getAnimations().forEach((a) => a.cancel());
-    sheet.style.translate = "0 120%";
+    sheet.style.translate = "0 110%";
+    sheet.style.opacity = "0";
     busy.current = false;
   };
 
@@ -176,13 +183,6 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
 
       {children}
 
-      <p className="absolute bottom-5 left-[var(--gutter)] z-50 font-mono text-xs tracking-[0.14em] text-ink-600">
-        <b className="font-normal text-flame-500">
-          0{Math.min(index + 1, PAGES.length)}
-        </b>{" "}
-        / 0{PAGES.length}
-      </p>
-
       <Link
         href="mailto:nordia@nordiatech.com.br"
         className="absolute right-[var(--gutter)] bottom-5 z-50 font-mono text-xs tracking-[0.1em] text-ink-600 transition-colors hover:text-paper"
@@ -190,24 +190,23 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
         CONVERSAR ↗
       </Link>
 
-      {/* the rising sheet: skewed so its edges carry the mark's diagonal */}
+      {/* the veil: translucent, so the page stays half-visible underneath */}
       <div
         ref={riser}
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-[-20%] top-[-25%] bottom-[-25%] z-[70] flex items-center justify-center bg-flame-500 [rotate:-6deg]"
+        className="pointer-events-none absolute inset-x-[-20%] top-[-25%] bottom-[-25%] z-[70] bg-gradient-to-t from-black via-black/85 to-transparent backdrop-blur-md [rotate:-6deg]"
         /*
           Everything here moves through the independent `translate` property,
           never `transform`. Tailwind v4 writes its own values into `transform`
           and into the `--tw-*` chain behind it, and those kept winning over
           both the inline style and the animation — which is exactly why the
-          transition was invisible in the last build. `rotate` stays separate
-          and composes, so the sheet keeps the mark's tilt while it travels.
+          transition was invisible in an earlier build. `rotate` stays separate
+          and composes, so the veil keeps the mark's tilt while it travels.
         */
-        style={{ translate: "0 120%" }}
+        style={{ translate: "0 110%", opacity: 0 }}
       >
-        <span className="font-display text-[22vw] leading-none font-extrabold tracking-tighter text-black/15 tabular-nums">
-          0{alvo}
-        </span>
+        {/* a single flame line on the leading edge — the only solid colour */}
+        <span className="absolute inset-x-0 top-[24%] h-px bg-gradient-to-r from-transparent via-flame-500 to-transparent" />
       </div>
     </div>
   );
