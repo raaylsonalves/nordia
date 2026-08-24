@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter, JetBrains_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
+import { SiteFrame } from "@/components/site-frame";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -19,6 +20,14 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
   weight: ["600", "700", "800"],
+  display: "swap",
+});
+
+/** Utility face: the micro-labels and data readouts across the three pages. */
+const mono = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -63,9 +72,11 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.variable} ${montserrat.variable}`}>
+      <body
+        className={`${inter.variable} ${montserrat.variable} ${mono.variable}`}
+      >
         {/* the frame: black ground outside, rounded shell around everything */}
-        <div className="site-shell">{children}</div>
+        <SiteFrame>{children}</SiteFrame>
       </body>
     </html>
   );

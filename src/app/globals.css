@@ -38,6 +38,7 @@
 
   --font-display: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 
   /* the mark's diagonal, reused as the site's one signature angle */
   --nordia-shear: -18deg;
@@ -173,27 +174,94 @@ body {
   min-height: calc(100svh - var(--frame) * 2);
 }
 
-/*
-  ScrollStack ships opinionated card metrics (fixed 20rem height, 5rem side
-  padding, 50rem of trailing space). Ours are content-sized and align to the
-  page grid instead.
-*/
-#trabalhos .scroll-stack-inner {
-  padding: 10vh 1.5rem 14rem;
+
+/* the page gutter, shared by the chrome and every page */
+:root {
+  --gutter: clamp(1.5rem, 5vw, 4rem);
 }
 
-@media (min-width: 640px) {
-  #trabalhos .scroll-stack-inner {
-    padding: 10vh 1.5rem 16rem;
+/*
+  Three single-screen pages, so the document itself never scrolls — each page
+  owns the viewport and lays itself out inside the shell.
+*/
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.site-shell {
+  height: calc(100% - var(--frame) * 2);
+  min-height: 0;
+  background: #0a0908;
+  color: var(--color-paper);
+}
+
+/* letters of a ProximityWord rising into place */
+@keyframes letter-rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
   }
 }
 
-#trabalhos .scroll-stack-card {
-  height: auto;
-  min-height: 24rem;
-  max-width: 72rem;
-  margin: 0 auto;
-  padding: 0;
-  border-radius: 40px;
-  box-shadow: 0 30px 80px rgb(0 0 0 / 0.5);
+/* the route sweep: four sheared panels, up over the old page, off the new one */
+@keyframes sweep-up {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes sweep-off {
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
+}
+
+.sweep-in i {
+  animation: sweep-up 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.sweep-out i {
+  transform-origin: top;
+  animation: sweep-off 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* the mark's diagonal, revealed only around the pointer */
+.marca-field::before,
+.marca-field::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.marca-field::before {
+  background: repeating-linear-gradient(
+    108deg,
+    var(--color-flame-500) 0 2px,
+    rgb(247 75 1 / 0.3) 2px 6px,
+    transparent 6px 30px
+  );
+  mask-image: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    #000,
+    rgb(0 0 0 / 0.5) 22%,
+    transparent 55%
+  );
+}
+
+.marca-field::after {
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgb(247 75 1 / 0.22),
+    transparent 42%
+  );
 }
