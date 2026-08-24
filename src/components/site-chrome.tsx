@@ -6,6 +6,7 @@ import { MorphicNavbar } from "@/components/kokonutui/morphic-navbar";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
+  { href: "#trabalhos", rotulo: "Trabalhos" },
   { href: "#problema", rotulo: "O problema" },
   { href: "#solucoes", rotulo: "O que fazemos" },
   { href: "#conversar", rotulo: "Contato" },
@@ -48,9 +49,12 @@ export function Header() {
   return (
     <header
       className={cn(
-        "fixed inset-x-0 top-0 z-50 transition-all duration-300",
+        "fixed z-50 transition-all duration-300",
+        // pinned inside the frame, not to the raw viewport
+        "inset-x-[var(--frame)] top-[var(--frame)]",
+        // the shell's top corners are rounded, so an opaque bar has to be too
         scrolled
-          ? "bg-flame-600/90 py-3 shadow-lg backdrop-blur-md"
+          ? "rounded-t-[calc(var(--frame)*2.4)] bg-black/80 py-3 shadow-lg backdrop-blur-md"
           : "bg-transparent py-6",
       )}
     >

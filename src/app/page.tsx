@@ -1,5 +1,6 @@
 import { Header, Footer } from "@/components/site-chrome";
 import { Hero } from "@/components/sections/hero";
+import { Trabalhos } from "@/components/sections/trabalhos";
 import { Problema } from "@/components/sections/problema";
 import { Solucoes } from "@/components/sections/solucoes";
 import { Proposito } from "@/components/sections/proposito";
@@ -12,6 +13,7 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
+        <Trabalhos />
         <Problema />
         <Solucoes />
         <Proposito />

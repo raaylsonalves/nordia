@@ -144,3 +144,56 @@
     animation: none !important;
   }
 }
+
+/*
+  The site frame — the page's black ground shows through a fixed inset while
+  the content rides inside a rounded shell. Everything fixed (header, chat)
+  has to be inset by the same amount or it breaks out of the corners.
+*/
+:root {
+  --frame: 0px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --frame: 10px;
+  }
+}
+
+body {
+  background: #000;
+  padding: var(--frame);
+}
+
+.site-shell {
+  position: relative;
+  overflow: clip;
+  border-radius: calc(var(--frame) * 2.4);
+  background: var(--background);
+  min-height: calc(100svh - var(--frame) * 2);
+}
+
+/*
+  ScrollStack ships opinionated card metrics (fixed 20rem height, 5rem side
+  padding, 50rem of trailing space). Ours are content-sized and align to the
+  page grid instead.
+*/
+#trabalhos .scroll-stack-inner {
+  padding: 10vh 1.5rem 14rem;
+}
+
+@media (min-width: 640px) {
+  #trabalhos .scroll-stack-inner {
+    padding: 10vh 1.5rem 16rem;
+  }
+}
+
+#trabalhos .scroll-stack-card {
+  height: auto;
+  min-height: 24rem;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 40px;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.5);
+}

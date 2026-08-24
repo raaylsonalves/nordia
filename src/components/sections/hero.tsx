@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { motion } from "motion/react";
 import AttractButton from "@/components/kokonutui/attract-button";
 import TypewriterTitle from "@/components/kokonutui/type-writer";
@@ -7,6 +8,20 @@ import {
   NORDIA_PATH_DARK,
   NORDIA_PATH_LIGHT,
 } from "@/components/brand/nordia-mark";
+
+/**
+ * Both of these open a WebGL context, so they are client-only and load after
+ * the hero's text. Until they arrive the flat SVG mark holds the layout — the
+ * heading and CTA never wait on a shader.
+ */
+const GradientBlinds = dynamic(
+  () => import("@/components/backgrounds/gradient-blinds"),
+  { ssr: false },
+);
+const NordiaMark3D = dynamic(
+  () => import("@/components/brand/nordia-mark-3d"),
+  { ssr: false, loading: () => <AssemblingMark /> },
+);
 
 /**
  * The two halves of the mark drift in from opposite sides and lock together.
@@ -44,16 +59,26 @@ function AssemblingMark() {
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden bg-flame-500 text-white">
-      {/* the mark's own diagonal, blown up as a background field */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.07]"
-        style={{
-          backgroundImage:
-            "repeating-linear-gradient(108deg, #000 0 2px, transparent 2px 90px)",
-        }}
-      />
+    <section className="relative overflow-hidden bg-black text-white">
+      {/* the only background layer: gradient blinds lit by a spotlight that
+          tracks the cursor anywhere over the hero, text column included —
+          the black base is what the blinds glow out of. */}
+      <div aria-hidden="true" className="absolute inset-0">
+        <GradientBlinds
+          gradientColors={["#F97316", "#EF4444"]}
+          angle={326}
+          noise={0.21}
+          blindCount={47}
+          blindMinWidth={150}
+          spotlightRadius={0.75}
+          spotlightSoftness={1}
+          spotlightOpacity={1}
+          mouseDampening={0.09}
+          distortAmount={62}
+          shineDirection="right"
+          mixBlendMode="lighten"
+        />
+      </div>
 
       <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 py-24 sm:py-32 lg:grid-cols-[1.25fr_auto] lg:gap-16">
         <div>
@@ -69,11 +94,11 @@ export function Hero() {
             <br />
             de mais tecnologia.
             <br />
-            <span className="text-ink-900">Precisa da tecnologia certa.</span>
+            <span className="text-flame-500">Precisa da tecnologia certa.</span>
           </h1>
 
           <p
-            className="mt-6 font-display text-[clamp(1.1rem,2.4vw,1.6rem)] font-medium text-ink-900"
+            className="mt-6 font-display text-[clamp(1.1rem,2.4vw,1.6rem)] font-medium text-flame-400"
             aria-hidden="true"
           >
             <TypewriterTitle
@@ -84,7 +109,7 @@ export function Hero() {
                 { text: "Ferramentas digitais.", deleteAfter: true },
               ]}
               typingSpeed={55}
-              cursorClassName="bg-ink-900"
+              cursorClassName="bg-flame-400"
             />
           </p>
 
@@ -114,7 +139,7 @@ export function Hero() {
         </div>
 
         <div className="flex justify-center lg:justify-end">
-          <AssemblingMark />
+          <NordiaMark3D className="h-[clamp(12rem,32vw,22rem)] w-[clamp(12rem,32vw,22rem)]" />
         </div>
       </div>
     </section>

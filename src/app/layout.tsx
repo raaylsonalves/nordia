@@ -55,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f74b01",
+  themeColor: "#000000",
 };
 
 export default function RootLayout({
@@ -64,7 +64,8 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body className={`${inter.variable} ${montserrat.variable}`}>
-        {children}
+        {/* the frame: black ground outside, rounded shell around everything */}
+        <div className="site-shell">{children}</div>
       </body>
     </html>
   );
