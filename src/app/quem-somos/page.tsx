@@ -3,13 +3,13 @@ import { ProximityWord } from "@/components/brand/proximity-word";
 import { DecryptText } from "@/components/ui/decrypt-text";
 
 export const metadata: Metadata = {
-  title: "Estúdio",
+  title: "Quem somos",
   description:
     "Estúdio de tecnologia em Fortaleza. Sistemas sob medida para quem já cresceu além das planilhas.",
 };
 
 /**
- * 03 — Estúdio. The facts as a data list rather than prose: it is both shorter
+ * 03 — Quem somos. The facts as a data list rather than prose: it is both shorter
  * to read and honest about what is still missing. The two blanks are marked as
  * blanks on purpose — an invented founding year or team is worse than none.
  */
@@ -21,7 +21,7 @@ const FATOS = [
   { rotulo: "Contato", valor: "nordia@nordiatech.com.br" },
 ];
 
-export default function Estudio() {
+export default function QuemSomos() {
   return (
     <section className="relative flex h-full flex-col justify-center px-[var(--gutter)]">
       <div className="grid items-center gap-[clamp(2rem,6vw,5rem)] lg:grid-cols-[1.1fr_0.9fr]">

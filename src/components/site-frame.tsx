@@ -13,20 +13,25 @@ import { cn } from "@/lib/utils";
  * The chrome that wraps all three pages: the pill nav, the page counter, the
  * grain, and the transition between routes.
  *
- * The transition is the thing that makes three separate routes read as one
- * site — four panels sheared to the mark's own -18°, sweeping up over the old
- * page and back down off the new one. Navigation waits for the sweep to cover
- * the screen before the route actually changes, so the swap is never seen.
+ * The transition never reverses. A single sheet — sheared to the mark's own
+ * angle, so its edge is the brand's diagonal — rises from below, covers the
+ * screen while the route swaps underneath, then keeps rising off the top. One
+ * continuous upward gesture, carrying the number of the page you are going to.
+ *
+ * It runs on the Web Animations API rather than CSS classes: the route change
+ * is sequenced off `finished`, so the swap can never be seen even if a build
+ * is slow to hand over.
  */
 
 const PAGES = [
-  { href: "/", rotulo: "Marca" },
+  { href: "/", rotulo: "Início" },
   { href: "/trabalhos", rotulo: "Trabalhos" },
-  { href: "/estudio", rotulo: "Estúdio" },
+  { href: "/quem-somos", rotulo: "Quem somos" },
 ] as const;
 
 const SCRAMBLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&/";
-const COVER_MS = 620;
+const RISE_MS = 520;
+const EASE = "cubic-bezier(.4,0,.2,1)";
 
 /** Nav label that shuffles its letters before settling, on hover. */
 function ScrambleLabel({ text }: { text: string }) {
@@ -64,33 +69,46 @@ function ScrambleLabel({ text }: { text: string }) {
 export function SiteFrame({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [sweep, setSweep] = useState<"idle" | "in" | "out">("idle");
+  const riser = useRef<HTMLDivElement>(null);
   const grain = useRef<HTMLCanvasElement>(null);
+  const busy = useRef(false);
+  const [alvo, setAlvo] = useState(1);
 
   const index = Math.max(
     0,
     PAGES.findIndex((p) => p.href === pathname),
   );
 
-  // the whole sequence is driven from the click, not from a pathname effect:
-  // cover the screen, swap the route underneath, uncover
-  const timers = useRef<number[]>([]);
-  useEffect(() => () => timers.current.forEach(window.clearTimeout), []);
+  const navigate = async (href: string) => {
+    if (href === pathname || busy.current) return;
 
-  const navigate = (href: string) => {
-    if (href === pathname || sweep !== "idle") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const sheet = riser.current;
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!sheet || still) {
       router.push(href);
       return;
     }
-    setSweep("in");
-    timers.current.push(
-      window.setTimeout(() => {
-        router.push(href);
-        setSweep("out");
-      }, COVER_MS),
-      window.setTimeout(() => setSweep("idle"), COVER_MS * 2),
-    );
+
+    busy.current = true;
+    setAlvo(PAGES.findIndex((p) => p.href === href) + 1);
+
+    const opts = { duration: RISE_MS, easing: EASE, fill: "forwards" as const };
+    await sheet.animate([{ translate: "0 120%" }, { translate: "0 0%" }], opts)
+      .finished;
+
+    router.push(href);
+    // one beat for the incoming route to paint under the cover
+    await new Promise((r) => window.setTimeout(r, 140));
+
+    await sheet.animate([{ translate: "0 0%" }, { translate: "0 -120%" }], opts)
+      .finished;
+
+    // cancel first so no fill survives, then re-arm the resting position by
+    // hand — relying on React to restore the inline style left the sheet
+    // parked over the page after the route swapped it
+    sheet.getAnimations().forEach((a) => a.cancel());
+    sheet.style.translate = "0 120%";
+    busy.current = false;
   };
 
   // static noise, drawn once and stretched — cheaper than a repeating image
@@ -172,19 +190,24 @@ export function SiteFrame({ children }: { children: React.ReactNode }) {
         CONVERSAR ↗
       </Link>
 
-      {/* the sweep, sheared to the mark's angle */}
+      {/* the rising sheet: skewed so its edges carry the mark's diagonal */}
       <div
+        ref={riser}
         aria-hidden="true"
-        className={cn(
-          "pointer-events-none absolute inset-[-30%_-20%] z-[70] flex [transform:skewX(var(--nordia-shear))]",
-          sweep === "in" && "sweep-in",
-          sweep === "out" && "sweep-out",
-        )}
+        className="pointer-events-none absolute inset-x-[-20%] top-[-25%] bottom-[-25%] z-[70] flex items-center justify-center bg-flame-500 [rotate:-6deg]"
+        /*
+          Everything here moves through the independent `translate` property,
+          never `transform`. Tailwind v4 writes its own values into `transform`
+          and into the `--tw-*` chain behind it, and those kept winning over
+          both the inline style and the animation — which is exactly why the
+          transition was invisible in the last build. `rotate` stays separate
+          and composes, so the sheet keeps the mark's tilt while it travels.
+        */
+        style={{ translate: "0 120%" }}
       >
-        <i className="flex-1 origin-bottom scale-y-0 bg-flame-500" />
-        <i className="flex-1 origin-bottom scale-y-0 bg-flame-500 [animation-delay:60ms]" />
-        <i className="flex-1 origin-bottom scale-y-0 bg-flame-500 [animation-delay:120ms]" />
-        <i className="flex-1 origin-bottom scale-y-0 bg-flame-500 [animation-delay:180ms]" />
+        <span className="font-display text-[22vw] leading-none font-extrabold tracking-tighter text-black/15 tabular-nums">
+          0{alvo}
+        </span>
       </div>
     </div>
   );

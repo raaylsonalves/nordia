@@ -265,3 +265,45 @@ body {
     transparent 42%
   );
 }
+
+/* a new field fading in when it takes over the home page */
+@keyframes field-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/*
+  react-bits ships the glitch in red/cyan — the textbook chromatic pair, and
+  two colours that belong to no one. Ours splits into flame and a cold ink, so
+  the artefact still reads as a signal fault without leaving the palette.
+*/
+.nordia-glitch {
+  /*
+    GlitchText writes its red/cyan pair as an inline style, so overriding the
+    two custom properties from a class needs !important — the alternative is
+    forking the component for two colours.
+  */
+  --after-shadow: -5px 0 var(--color-flame-500) !important;
+  --before-shadow: 5px 0 #1d6ef7 !important;
+  color: var(--color-paper);
+  font-size: inherit;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+  cursor: default;
+}
+
+/*
+  Upstream paints the two ghost copies on an opaque slab so they hide the text
+  underneath. Over a live background that slab reads as a black box around the
+  word, so the ghosts go transparent and are dimmed instead — the artefact
+  still reads, and the field keeps showing through.
+*/
+.nordia-glitch::before,
+.nordia-glitch::after {
+  background-color: transparent;
+  opacity: 0.75;
+}
