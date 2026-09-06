@@ -65,8 +65,12 @@
     border-color: var(--border);
   }
 
+  /*
+    Sem smooth nativo: quem conduz o scroll é o Lenis, e os dois juntos brigam
+    pela mesma posição. A rolagem suave dos links âncora passa a ser dele.
+  */
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
   }
 
   /* The header is fixed, so an anchor would otherwise land underneath it. */
@@ -190,32 +194,50 @@
   }
 }
 
+/* ==========================================================================
+   Cenas — os estados de repouso do que o GSAP conduz.
+   Tudo aqui fica atrás de html.js: sem script a página aparece inteira, em
+   vez de virar uma folha em branco de elementos esperando um gatilho.
+   ========================================================================== */
+
+/* Títulos linha a linha. Cada linha é uma janela; o span é o que sobe. */
+[data-linhas] .ln {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em; /* a perna do "g" não pode ser cortada */
+}
+
+[data-linhas] .ln > span {
+  display: block;
+  will-change: transform;
+}
+
+/* Placas: qualquer bloco com cara de imagem. */
+[data-plate] {
+  overflow: hidden;
+  will-change: clip-path, transform;
+}
+
+[data-plate-inner] {
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+/* Trilho horizontal: a fila que anda enquanto a página desce. */
+[data-trilho] {
+  display: flex;
+  will-change: transform;
+}
+
+/* O pino precisa de uma cena com altura de tela para prender. */
+[data-cena="pin"] > [data-preso-conteudo] {
+  will-change: transform;
+}
+
 /*
-  O único efeito: sobe e aparece. Parte de visível e é o JS que esconde, para
-  que a página sem script continue legível em vez de ficar em branco.
+  Nada aqui esconde nada. O estado inicial das cenas é escrito pelo GSAP em
+  cinema.tsx, com gsap.set(), logo antes de criar cada tween. Se o script não
+  rodar — bloqueado, com erro, ou com "reduzir movimento" ligado — a página
+  aparece inteira, porque nunca chegou a ser escondida.
 */
-.sobe {
-  opacity: 1;
-}
-
-.js .sobe {
-  opacity: 0;
-  translate: 0 16px;
-  transition:
-    opacity 0.7s ease,
-    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: var(--d, 0ms);
-}
-
-.js .sobe.visivel {
-  opacity: 1;
-  translate: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .js .sobe {
-    opacity: 1;
-    translate: 0;
-    transition: none;
-  }
-}

@@ -1,57 +1,20 @@
-"use client";
-
-import { motion } from "motion/react";
-import { Reveal } from "@/components/ui/reveal";
-import {
-  NORDIA_PATH_DARK,
-  NORDIA_PATH_LIGHT,
-} from "@/components/brand/nordia-mark";
+import { Linhas, Placa } from "@/components/motion/linhas";
+import { NordiaMark } from "@/components/brand/nordia-mark";
 
 /**
- * The two halves of the mark drift in from opposite sides and lock together.
- * That is the whole pitch in one gesture: two things that finally fit.
+ * Cena 01 — abertura.
  *
- * It sits quietly in the hero's footer now rather than filling half the
- * screen — the reference spends its space on emptiness, not on a second
- * focal point.
- */
-function MarcaMontando() {
-  const ease = [0.16, 1, 0.3, 1] as const;
-
-  return (
-    <svg
-      viewBox="0 0 320 414"
-      fill="none"
-      aria-hidden="true"
-      className="h-[clamp(3.5rem,7vw,5.5rem)] w-auto"
-    >
-      <motion.path
-        data-motion
-        d={NORDIA_PATH_LIGHT}
-        fill="var(--color-paper-dim)"
-        initial={{ x: -60, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 1.2, ease, delay: 0.2 }}
-      />
-      <motion.path
-        data-motion
-        d={NORDIA_PATH_DARK}
-        fill="var(--color-ink-900)"
-        initial={{ x: 60, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
-        transition={{ duration: 1.2, ease, delay: 0.2 }}
-      />
-    </svg>
-  );
-}
-
-/**
- * The four fronts, listed once under the headline.
+ * A cena prende no topo e o conteúdo continua andando enquanto ela está
+ * presa: o título sobe linha a linha, a placa abre por máscara e assenta de
+ * uma escala maior, e a faixa de metadados corre mais rápido que o resto. A
+ * placa e o texto ocupam a mesma faixa da tela de propósito — é a composição
+ * sobreposta da referência, não duas colunas lado a lado.
  *
- * These are the strings the typewriter used to cycle through. A visitor
- * reading four claims in sequence has to wait to learn what the studio does,
- * and only ever sees one of them in a screenshot.
+ * Ainda não existem fotos dos projetos, então a placa carrega o material da
+ * própria marca: a diagonal do "N" repetida. A geometria da composição é
+ * real; só o conteúdo dela é provisório.
  */
+
 const FRENTES = [
   "Sistemas sob medida",
   "Integrações",
@@ -61,61 +24,94 @@ const FRENTES = [
 
 export function Hero() {
   return (
-    <section className="edge flex min-h-[92svh] flex-col justify-between pt-[clamp(8rem,20vh,13rem)] pb-[clamp(2.5rem,7vh,4rem)]">
-      <div className="shell w-full">
-        <Reveal as="p" className="rotulo text-[var(--muted)]">
-          Tecnologia com propósito
-        </Reveal>
-
-        <Reveal
-          as="h1"
-          delay={90}
-          className="titulo mt-[clamp(2rem,6vh,3.5rem)] max-w-[16ch] text-[clamp(2.6rem,8vw,6.5rem)]"
-        >
-          Seu negócio não precisa de mais tecnologia.
-        </Reveal>
-
-        <Reveal
-          delay={180}
-          className="mt-[clamp(1.5rem,4vh,2.5rem)] max-w-[46ch] leading-relaxed text-[var(--muted)]"
-        >
-          Precisa da tecnologia certa. Processos manuais, informações espalhadas
-          e sistemas que não conversam entre si consomem tempo e energia que
-          deveriam estar fazendo o negócio crescer.
-        </Reveal>
-
-        <Reveal delay={260} className="mt-[clamp(2rem,5vh,3rem)]">
-          <a
-            href="#conversar"
-            className="group inline-flex items-center gap-3 text-[0.95rem]"
+    <section
+      data-cena="pin"
+      className="relative h-svh overflow-hidden"
+      aria-label="Início"
+    >
+      <div
+        data-preso-conteudo
+        className="edge flex h-full flex-col justify-between pt-[clamp(7rem,17vh,10rem)] pb-[clamp(2rem,6vh,3.5rem)]"
+      >
+        <div className="shell relative w-full">
+          {/* a placa entra por trás do título e sai pela direita do trilho */}
+          <Placa
+            de="baixo"
+            className="pointer-events-none absolute top-[38%] right-[-7vw] z-0 hidden aspect-[3/4] w-[min(24vw,290px)] lg:block"
           >
-            <span className="border-b border-current pb-1">
-              Vamos conversar
-            </span>
-            <span
-              aria-hidden="true"
-              className="text-flame-500 transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1"
+            <div
+              data-lento
+              className="h-full w-full bg-ink-900"
+              style={{
+                backgroundImage:
+                  "repeating-linear-gradient(108deg, rgba(247,75,1,.55) 0 2px, transparent 2px 26px)",
+              }}
             >
-              →
-            </span>
-          </a>
-        </Reveal>
-      </div>
+              <span className="sr-only">
+                Espaço reservado para imagem de projeto
+              </span>
+            </div>
+          </Placa>
 
-      {/* rodapé do hero: as frentes de um lado, a marca do outro */}
-      <Reveal delay={340} className="shell mt-[clamp(3rem,8vh,5rem)] w-full">
-        <span className="block h-px w-full bg-[var(--foreground)] opacity-10" />
-        <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6 pt-6">
-          <ul className="flex flex-wrap gap-x-8 gap-y-2">
-            {FRENTES.map((f) => (
-              <li key={f} className="rotulo text-[var(--muted)]">
-                {f}
-              </li>
-            ))}
-          </ul>
-          <MarcaMontando />
+          <p data-sai className="rotulo relative z-10 text-[var(--muted)]">
+            Tecnologia com propósito
+          </p>
+
+          <Linhas
+            as="h1"
+            className="titulo relative z-10 mt-[clamp(2rem,6vh,3.25rem)] max-w-[15ch] text-[clamp(2.6rem,7.4vw,6rem)]"
+            linhas={["Seu negócio não precisa", "de mais tecnologia."]}
+          />
+
+          <div
+            data-medio
+            className="relative z-10 mt-[clamp(1.5rem,4vh,2.25rem)] max-w-[46ch] leading-relaxed text-[var(--muted)]"
+          >
+            Precisa da tecnologia certa. Processos manuais, informações
+            espalhadas e sistemas que não conversam entre si consomem tempo e
+            energia que deveriam estar fazendo o negócio crescer.
+          </div>
+
+          <div
+            data-rapido
+            className="relative z-10 mt-[clamp(1.75rem,4.5vh,2.5rem)]"
+          >
+            <a
+              href="#conversar"
+              className="group inline-flex items-center gap-3 text-[0.95rem]"
+            >
+              <span className="border-b border-current pb-1">
+                Vamos conversar
+              </span>
+              <span
+                aria-hidden="true"
+                className="text-flame-500 transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1"
+              >
+                →
+              </span>
+            </a>
+          </div>
         </div>
-      </Reveal>
+
+        {/* rodapé da cena: as frentes e a marca */}
+        <div data-sai className="shell w-full">
+          <span className="block h-px w-full bg-[var(--foreground)] opacity-10" />
+          <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-5 pt-5">
+            <ul className="flex flex-wrap gap-x-8 gap-y-2">
+              {FRENTES.map((f) => (
+                <li key={f} className="rotulo text-[var(--muted)]">
+                  {f}
+                </li>
+              ))}
+            </ul>
+            <NordiaMark
+              className="h-[clamp(2rem,4vw,3rem)] w-auto"
+              light="var(--color-paper-dim)"
+              dark="var(--color-ink-900)"
+            />
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

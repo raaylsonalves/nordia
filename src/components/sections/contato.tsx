@@ -1,5 +1,5 @@
 import { Mail, MessageCircle } from "lucide-react";
-import { Reveal } from "@/components/ui/reveal";
+import { Linhas, Placa } from "@/components/motion/linhas";
 
 /** lucide-react dropped its brand glyphs, so the Instagram mark lives here. */
 function Instagram({ className }: { className?: string }) {
@@ -45,62 +45,81 @@ const CANAIS = [
 ];
 
 /**
- * The close.
+ * Cena 05 — o fecho.
  *
- * The three channels were a stacked card deck; they are now three rules the
- * width of the page. A phone number and an e-mail address are what a visitor
- * came for, and they should be the largest type in the section — which they
- * now are.
+ * A placa fica atrás dos canais e corre mais devagar que eles: os dois
+ * ocupam a mesma faixa da tela e se cruzam. Os canais continuam sendo o
+ * maior texto da seção — um telefone e um e-mail são o que a pessoa veio
+ * buscar.
  */
 export function Contato() {
   return (
-    <section id="conversar" className="edge py-[clamp(6rem,18vh,11rem)]">
-      <div className="shell">
-        <Reveal as="p" className="rotulo text-flame-500">
-          Contato
-        </Reveal>
-
-        <Reveal
-          as="h2"
-          delay={80}
-          className="titulo mt-8 max-w-[24ch] text-[clamp(1.6rem,4vw,3rem)]"
+    <section
+      data-cena
+      id="conversar"
+      className="relative overflow-hidden py-[clamp(6rem,18vh,11rem)]"
+    >
+      <Placa
+        de="direita"
+        className="pointer-events-none absolute top-[18%] right-[-8vw] z-0 hidden aspect-square w-[min(38vw,460px)] lg:block"
+      >
+        <div
+          data-lento
+          className="h-full w-full bg-paper-dim"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(108deg, rgba(18,17,16,.14) 0 1px, transparent 1px 20px)",
+          }}
         >
-          Se existe algo na sua empresa que poderia funcionar melhor, talvez
-          seja por onde devemos começar.
-        </Reveal>
+          <span className="sr-only">Espaço reservado para imagem</span>
+        </div>
+      </Placa>
 
-        <ul className="mt-[clamp(4rem,12vh,7rem)]">
-          {CANAIS.map((c, i) => {
+      <div className="shell edge relative z-10">
+        <p data-rapido className="rotulo text-flame-500">
+          Contato
+        </p>
+
+        <Linhas
+          as="h2"
+          className="titulo mt-8 max-w-[24ch] text-[clamp(1.6rem,4vw,3rem)]"
+          linhas={[
+            "Se existe algo na sua empresa",
+            "que poderia funcionar melhor,",
+            "talvez seja por onde devemos começar.",
+          ]}
+        />
+
+        <ul data-medio className="mt-[clamp(4rem,12vh,7rem)]">
+          {CANAIS.map((c) => {
             const Icone = c.icone;
             return (
               <li key={c.rotulo}>
-                <Reveal delay={i * 60}>
-                  <a
-                    href={c.href}
-                    {...(c.externo
-                      ? { target: "_blank", rel: "noreferrer" }
-                      : {})}
-                    className="group flex flex-col gap-1 border-t border-[var(--border)] py-[clamp(1.4rem,4vh,2.4rem)] sm:flex-row sm:items-baseline sm:gap-10"
+                <a
+                  href={c.href}
+                  {...(c.externo
+                    ? { target: "_blank", rel: "noreferrer" }
+                    : {})}
+                  className="group flex flex-col gap-1 border-t border-[var(--border)] py-[clamp(1.4rem,4vh,2.4rem)] sm:flex-row sm:items-baseline sm:gap-10"
+                >
+                  <span className="flex shrink-0 items-center gap-3 sm:w-40">
+                    <Icone className="size-3.5 shrink-0 text-[var(--muted)] transition-colors duration-300 group-hover:text-flame-500" />
+                    <span className="rotulo text-[var(--muted)]">
+                      {c.rotulo}
+                    </span>
+                  </span>
+
+                  <span className="titulo text-[clamp(1.4rem,3.6vw,2.6rem)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-2">
+                    {c.valor}
+                  </span>
+
+                  <span
+                    aria-hidden="true"
+                    className="ml-auto hidden self-center text-[var(--muted)] opacity-0 transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1 group-hover:text-flame-500 group-hover:opacity-100 lg:block"
                   >
-                    <span className="flex shrink-0 items-center gap-3 sm:w-40">
-                      <Icone className="size-3.5 shrink-0 text-[var(--muted)] transition-colors duration-300 group-hover:text-flame-500" />
-                      <span className="rotulo text-[var(--muted)]">
-                        {c.rotulo}
-                      </span>
-                    </span>
-
-                    <span className="titulo text-[clamp(1.4rem,3.6vw,2.6rem)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-2">
-                      {c.valor}
-                    </span>
-
-                    <span
-                      aria-hidden="true"
-                      className="ml-auto hidden self-center text-[var(--muted)] opacity-0 transition-all duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1 group-hover:text-flame-500 group-hover:opacity-100 lg:block"
-                    >
-                      →
-                    </span>
-                  </a>
-                </Reveal>
+                    →
+                  </span>
+                </a>
               </li>
             );
           })}

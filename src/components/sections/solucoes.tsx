@@ -1,4 +1,4 @@
-import { Reveal } from "@/components/ui/reveal";
+import { Linhas, Placa } from "@/components/motion/linhas";
 
 const FRENTES = [
   {
@@ -36,74 +36,95 @@ const FRENTES = [
 ];
 
 /**
- * What the studio does, as an index.
+ * Cena 03 — o que fazemos.
  *
- * This used to be four flip cards over an animated canvas field: the flip hid
- * half the content behind a gesture nobody is obliged to make, and the field
- * ran a full-time animation loop behind text. Everything is on the page now,
- * which also means this no longer needs to be a client component.
+ * A cena prende e as quatro frentes atravessam a tela na horizontal enquanto
+ * a pessoa continua rolando para baixo. É a única seção da página que se
+ * percorre de lado, e é de propósito: quatro coisas em fila são uma fila, não
+ * uma grade — e ler uma de cada vez é o que a rolagem passa a controlar.
  */
 export function Solucoes() {
   return (
     <section
+      data-cena
       id="solucoes"
-      className="edge bg-ink-950 py-[clamp(6rem,18vh,11rem)] text-paper"
+      className="relative flex h-svh flex-col justify-center overflow-hidden bg-ink-950 text-paper"
     >
-      <div className="shell">
-        <Reveal as="p" className="rotulo text-flame-500">
-          O que fazemos
-        </Reveal>
-
-        <Reveal
+      <div className="shell edge w-full shrink-0">
+        <p className="rotulo text-flame-500">O que fazemos</p>
+        <Linhas
           as="h2"
-          delay={80}
-          className="titulo mt-8 max-w-[18ch] text-[clamp(2rem,5.5vw,4rem)]"
-        >
-          É aí que a Nordia entra.
-        </Reveal>
+          className="titulo mt-6 max-w-[18ch] text-[clamp(1.8rem,4.6vw,3.4rem)]"
+          linhas={["É aí que a Nordia entra."]}
+        />
+      </div>
 
-        <Reveal
-          delay={140}
-          className="mt-7 max-w-[52ch] leading-relaxed text-ink-300"
+      {/* o trilho: mais largo que a tela, conduzido pelo scroll vertical */}
+      <div className="mt-[clamp(2.5rem,7vh,4.5rem)] overflow-hidden">
+        <div
+          data-trilho
+          className="gap-[clamp(1.25rem,3vw,2.5rem)] pl-[var(--edge)] pr-[35vw]"
         >
-          Soluções tecnológicas sob medida, de sistemas e integrações a
-          automações e ferramentas digitais, pensadas para as necessidades reais
-          de cada negócio.
-        </Reveal>
-
-        <ul className="mt-[clamp(4rem,11vh,7rem)]">
           {FRENTES.map((f, i) => (
-            <li key={f.titulo}>
-              <Reveal delay={i * 60}>
-                <a
-                  href="#conversar"
-                  className="group flex flex-col gap-3 border-t border-white/12 py-[clamp(1.6rem,4.5vh,2.8rem)] sm:flex-row sm:gap-10"
+            <article
+              key={f.titulo}
+              className="flex w-[min(76vw,420px)] shrink-0 flex-col border-t border-white/15 pt-6"
+            >
+              <span className="rotulo text-flame-500">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
+              <h3 className="titulo mt-5 text-[clamp(1.5rem,3vw,2.2rem)]">
+                {f.titulo}
+              </h3>
+
+              <Placa
+                de={i % 2 === 0 ? "baixo" : "esquerda"}
+                className="mt-7 aspect-[4/3] w-full"
+              >
+                <div
+                  className="h-full w-full bg-ink-900"
+                  style={{
+                    backgroundImage:
+                      "repeating-linear-gradient(108deg, rgba(247,75,1,.4) 0 2px, transparent 2px 22px)",
+                  }}
                 >
-                  <span className="rotulo shrink-0 pt-1 text-ink-400 transition-colors duration-300 group-hover:text-flame-500 sm:w-16">
-                    {String(i + 1).padStart(2, "0")}
+                  <span className="sr-only">
+                    Espaço reservado para imagem do projeto
                   </span>
+                </div>
+              </Placa>
 
-                  <span className="titulo shrink-0 text-[clamp(1.5rem,3.6vw,2.6rem)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-2 sm:w-[34%]">
-                    {f.titulo}
-                  </span>
+              <p className="mt-6 leading-relaxed text-ink-300">{f.texto}</p>
 
-                  <span className="max-w-[48ch]">
-                    <span className="block leading-relaxed text-ink-300">
-                      {f.texto}
-                    </span>
-                    <span className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5">
-                      {f.entregas.map((e) => (
-                        <span key={e} className="rotulo text-ink-400">
-                          {e}
-                        </span>
-                      ))}
-                    </span>
-                  </span>
-                </a>
-              </Reveal>
-            </li>
+              <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-1.5">
+                {f.entregas.map((e) => (
+                  <li key={e} className="rotulo text-ink-400">
+                    {e}
+                  </li>
+                ))}
+              </ul>
+            </article>
           ))}
-        </ul>
+
+          {/* fecho do trilho: o convite, já no fim da fila */}
+          <div className="flex w-[min(70vw,360px)] shrink-0 items-center">
+            <a
+              href="#conversar"
+              className="group inline-flex items-center gap-3 text-[0.95rem]"
+            >
+              <span className="border-b border-current pb-1">
+                Vamos conversar
+              </span>
+              <span
+                aria-hidden="true"
+                className="text-flame-500 transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-1"
+              >
+                →
+              </span>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
