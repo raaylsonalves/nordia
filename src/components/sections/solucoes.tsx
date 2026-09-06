@@ -1,94 +1,110 @@
 import { Reveal } from "@/components/ui/reveal";
-import { NordiaMark } from "@/components/brand/nordia-mark";
-import CardFlip from "@/components/kokonutui/card-flip";
-import FlowField from "@/components/kokonutui/flow-field";
 
 const FRENTES = [
   {
     titulo: "Sistemas sob medida",
-    resumo: "Construído para o seu processo",
     texto:
       "Software construído para o seu processo — não o seu processo torcido para caber num software de prateleira.",
-    entregas: ["Levantamento do processo", "Sistema próprio", "Suporte contínuo"],
+    entregas: [
+      "Levantamento do processo",
+      "Sistema próprio",
+      "Suporte contínuo",
+    ],
   },
   {
     titulo: "Integrações",
-    resumo: "Suas ferramentas conversando",
     texto:
       "Fazemos as ferramentas que você já usa trocarem informação entre si, sem ninguém no meio copiando dados.",
-    entregas: ["APIs e webhooks", "Sincronização de dados", "Fim da digitação dupla"],
+    entregas: [
+      "APIs e webhooks",
+      "Sincronização de dados",
+      "Fim da digitação dupla",
+    ],
   },
   {
     titulo: "Automações",
-    resumo: "O repetitivo rodando sozinho",
     texto:
       "O trabalho repetitivo passa a rodar sozinho, com regra clara e resultado previsível.",
     entregas: ["Rotinas agendadas", "Regras de negócio", "Alertas automáticos"],
   },
   {
     titulo: "Novas soluções",
-    resumo: "Quando não existe pronto",
     texto:
       "Quando não existe pronto, a gente desenha e constrói a partir da necessidade real do negócio.",
     entregas: ["Descoberta do problema", "Protótipo", "Construção sob medida"],
   },
 ];
 
+/**
+ * What the studio does, as an index.
+ *
+ * This used to be four flip cards over an animated canvas field: the flip hid
+ * half the content behind a gesture nobody is obliged to make, and the field
+ * ran a full-time animation loop behind text. Everything is on the page now,
+ * which also means this no longer needs to be a client component.
+ */
 export function Solucoes() {
   return (
-    <section id="solucoes">
-      {/*
-        FlowField ships as a full-viewport hero: `min-h-screen`, flex-centred.
-        The overrides below turn it into a section backdrop. `ember` is its own
-        red→orange hue band, so the field lands on the brand palette without
-        inventing a theme.
-      */}
-      <FlowField
-        theme="ember"
-        density="sparse"
-        className="block min-h-0 py-24 sm:py-32"
-      >
-        <div className="relative z-10 mx-auto max-w-6xl px-6">
-          <Reveal>
-            <div className="flex items-center gap-4">
-              <NordiaMark
-                className="h-9 w-auto shrink-0"
-                light="var(--color-flame-500)"
-                dark="var(--color-paper)"
-              />
-              <span className="h-px flex-1 rule-flame" />
-            </div>
-          </Reveal>
+    <section
+      id="solucoes"
+      className="edge bg-ink-950 py-[clamp(6rem,18vh,11rem)] text-paper"
+    >
+      <div className="shell">
+        <Reveal as="p" className="rotulo text-flame-500">
+          O que fazemos
+        </Reveal>
 
-          <Reveal delay={0.05}>
-            <h2 className="text-display mt-10 max-w-3xl text-[clamp(1.9rem,4.4vw,3.1rem)] text-paper">
-              É aí que a Nordia entra.
-            </h2>
-          </Reveal>
+        <Reveal
+          as="h2"
+          delay={80}
+          className="titulo mt-8 max-w-[18ch] text-[clamp(2rem,5.5vw,4rem)]"
+        >
+          É aí que a Nordia entra.
+        </Reveal>
 
-          <Reveal delay={0.1}>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-ink-300">
-              Desenvolvemos soluções tecnológicas sob medida, de sistemas e
-              integrações a automações, ferramentas digitais e novas soluções
-              pensadas para as necessidades reais de cada negócio.
-            </p>
-          </Reveal>
+        <Reveal
+          delay={140}
+          className="mt-7 max-w-[52ch] leading-relaxed text-ink-300"
+        >
+          Soluções tecnológicas sob medida, de sistemas e integrações a
+          automações e ferramentas digitais, pensadas para as necessidades reais
+          de cada negócio.
+        </Reveal>
 
-          <div className="mt-16 grid gap-8 sm:grid-cols-2">
-            {FRENTES.map((f, i) => (
-              <Reveal key={f.titulo} delay={i * 0.06}>
-                <CardFlip
-                  title={f.titulo}
-                  subtitle={f.resumo}
-                  description={f.texto}
-                  features={f.entregas}
-                  ctaLabel="Falar sobre isso"
-                />
+        <ul className="mt-[clamp(4rem,11vh,7rem)]">
+          {FRENTES.map((f, i) => (
+            <li key={f.titulo}>
+              <Reveal delay={i * 60}>
+                <a
+                  href="#conversar"
+                  className="group flex flex-col gap-3 border-t border-white/12 py-[clamp(1.6rem,4.5vh,2.8rem)] sm:flex-row sm:gap-10"
+                >
+                  <span className="rotulo shrink-0 pt-1 text-ink-400 transition-colors duration-300 group-hover:text-flame-500 sm:w-16">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+
+                  <span className="titulo shrink-0 text-[clamp(1.5rem,3.6vw,2.6rem)] transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)] group-hover:translate-x-2 sm:w-[34%]">
+                    {f.titulo}
+                  </span>
+
+                  <span className="max-w-[48ch]">
+                    <span className="block leading-relaxed text-ink-300">
+                      {f.texto}
+                    </span>
+                    <span className="mt-4 flex flex-wrap gap-x-5 gap-y-1.5">
+                      {f.entregas.map((e) => (
+                        <span key={e} className="rotulo text-ink-400">
+                          {e}
+                        </span>
+                      ))}
+                    </span>
+                  </span>
+                </a>
               </Reveal>
-            ))}
-          </div>
-        </div>
-      </FlowField>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Montserrat } from "next/font/google";
+import { Inter, JetBrains_Mono, Montserrat } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
@@ -19,6 +19,18 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
   weight: ["600", "700", "800"],
+  display: "swap",
+});
+
+/**
+ * Utility face: the micro-labels, numbering and data readouts. A monospace is
+ * what makes an index of small numbers read as an index rather than as small
+ * body text.
+ */
+const mono = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -62,10 +74,28 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR">
-      <body className={`${inter.variable} ${montserrat.variable}`}>
-        {children}
-      </body>
+    /*
+      As variáveis das fontes ficam no <html>, não no <body>.
+      --font-sans e companhia são declaradas em :root e apontam para
+      var(--font-inter); se --font-inter só existisse no <body>, a substituição
+      aconteceria em :root, onde ela não existe, e as três famílias cairiam
+      caladas na sans do sistema — o site inteiro.
+    */
+    <html
+      lang="pt-BR"
+      className={`js ${inter.variable} ${montserrat.variable} ${mono.variable}`}
+    >
+      <head>
+        {/*
+          A revelação parte de opacity 0, então precisa de uma saída para quem
+          não executa scripts. A classe vem do servidor — adicioná-la no
+          cliente quebraria a hidratação — e o <noscript> a desfaz.
+        */}
+        <noscript>
+          <style>{`.js .sobe{opacity:1;translate:none}`}</style>
+        </noscript>
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

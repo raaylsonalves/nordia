@@ -27,32 +27,48 @@ const DORES = [
   },
 ];
 
+/**
+ * The four costs, as a ruled list rather than a card grid.
+ *
+ * Same four items, same copy. A 2×2 of rounded boxes gives each one the same
+ * weight and reads as a feature grid; a list with the number set apart reads
+ * as an index, which is what this is.
+ */
 export function Problema() {
   return (
-    <section id="problema" className="bg-ink-950 py-24 text-paper sm:py-32">
-      <div className="mx-auto max-w-6xl px-6">
-        <Reveal>
-          <h2 className="text-display max-w-3xl text-[clamp(1.9rem,4.4vw,3.1rem)]">
-            O custo não aparece na fatura.
-            <span className="block text-ink-300">Aparece no calendário.</span>
-          </h2>
+    <section id="problema" className="edge py-[clamp(6rem,18vh,11rem)]">
+      <div className="shell">
+        <Reveal as="p" className="rotulo text-[var(--muted)]">
+          O custo
         </Reveal>
 
-        <div className="mt-16 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2">
+        <Reveal
+          as="h2"
+          delay={80}
+          className="titulo mt-8 max-w-[20ch] text-[clamp(2rem,5.5vw,4rem)]"
+        >
+          O custo não aparece na fatura. Aparece no calendário.
+        </Reveal>
+
+        <ul className="mt-[clamp(4rem,11vh,7rem)]">
           {DORES.map((d, i) => (
-            <Reveal key={d.n} delay={i * 0.06}>
-              <article className="h-full bg-ink-950 p-8 sm:p-10">
-                <span className="font-display text-sm font-bold text-flame-500">
-                  {d.n}
-                </span>
-                <h3 className="mt-4 font-display text-xl font-semibold">
-                  {d.titulo}
-                </h3>
-                <p className="mt-3 leading-relaxed text-ink-300">{d.texto}</p>
-              </article>
-            </Reveal>
+            <li key={d.n}>
+              <Reveal delay={i * 60}>
+                <article className="flex flex-col gap-2 border-t border-[var(--border)] py-[clamp(1.5rem,4vh,2.5rem)] sm:flex-row sm:gap-10">
+                  <span className="rotulo shrink-0 pt-1 text-flame-500 sm:w-16">
+                    {d.n}
+                  </span>
+                  <h3 className="titulo shrink-0 text-[clamp(1.2rem,2.4vw,1.8rem)] sm:w-[34%]">
+                    {d.titulo}
+                  </h3>
+                  <p className="max-w-[48ch] leading-relaxed text-[var(--muted)]">
+                    {d.texto}
+                  </p>
+                </article>
+              </Reveal>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
