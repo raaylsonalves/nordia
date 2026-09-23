@@ -1,4 +1,6 @@
 import type { Metadata, Viewport } from "next";
+import { Inter, Montserrat } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -55,6 +57,7 @@ export default function RootLayout({
       <body>
         <noscript><style>{`.n-hero-visual { transform: none; } .n-hero-rail { display: none; }`}</style></noscript>
         {children}
+        <Analytics />
       </body>
     </html>
   );
