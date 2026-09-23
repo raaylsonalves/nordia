@@ -10,9 +10,8 @@ import { NordiaMark } from "@/components/brand/nordia-mark";
  * placa e o texto ocupam a mesma faixa da tela de propósito — é a composição
  * sobreposta da referência, não duas colunas lado a lado.
  *
- * Ainda não existem fotos dos projetos, então a placa carrega o material da
- * própria marca: a diagonal do "N" repetida. A geometria da composição é
- * real; só o conteúdo dela é provisório.
+ * A placa carrega o material da própria marca: a diagonal do "N" repetida
+ * como um cartaz editorial, mantendo a composição abstrata e proprietária.
  */
 
 const FRENTES = [
@@ -41,15 +40,15 @@ export function Hero() {
           >
             <div
               data-lento
-              className="h-full w-full bg-ink-900"
+              className="relative flex h-full w-full flex-col justify-between bg-ink-900 p-6"
               style={{
                 backgroundImage:
                   "repeating-linear-gradient(108deg, rgba(247,75,1,.55) 0 2px, transparent 2px 26px)",
               }}
             >
-              <span className="sr-only">
-                Espaço reservado para imagem de projeto
-              </span>
+              <span className="rotulo text-paper/60">NORDIA / 01</span>
+              <NordiaMark className="w-full" light="var(--color-paper)" dark="var(--color-flame-500)" />
+              <span className="rotulo text-paper/60">TECNOLOGIA COM PROPÓSITO</span>
             </div>
           </Placa>
 

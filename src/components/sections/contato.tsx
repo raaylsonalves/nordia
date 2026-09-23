@@ -1,5 +1,6 @@
 import { Mail, MessageCircle } from "lucide-react";
 import { Linhas, Placa } from "@/components/motion/linhas";
+import { NordiaMark } from "@/components/brand/nordia-mark";
 
 /** lucide-react dropped its brand glyphs, so the Instagram mark lives here. */
 function Instagram({ className }: { className?: string }) {
@@ -65,13 +66,14 @@ export function Contato() {
       >
         <div
           data-lento
-          className="h-full w-full bg-paper-dim"
+          className="flex h-full w-full flex-col items-center justify-center gap-8 bg-paper-dim p-8"
           style={{
             backgroundImage:
               "repeating-linear-gradient(108deg, rgba(18,17,16,.14) 0 1px, transparent 1px 20px)",
           }}
         >
-          <span className="sr-only">Espaço reservado para imagem</span>
+          <NordiaMark className="w-2/3" light="var(--color-ink-900)" dark="var(--color-flame-500)" />
+          <span className="rotulo text-ink-600">VAMOS CONSTRUIR JUNTOS</span>
         </div>
       </Placa>
 

@@ -1,4 +1,5 @@
 import { Linhas, Placa } from "@/components/motion/linhas";
+import { NordiaMark } from "@/components/brand/nordia-mark";
 
 const FRENTES = [
   {
@@ -83,15 +84,15 @@ export function Solucoes() {
                 className="mt-7 aspect-[4/3] w-full"
               >
                 <div
-                  className="h-full w-full bg-ink-900"
+                  className="relative flex h-full w-full flex-col justify-between bg-ink-900 p-6"
                   style={{
                     backgroundImage:
                       "repeating-linear-gradient(108deg, rgba(247,75,1,.4) 0 2px, transparent 2px 22px)",
                   }}
                 >
-                  <span className="sr-only">
-                    Espaço reservado para imagem do projeto
-                  </span>
+                  <span className="rotulo text-paper/55">NORDIA / {String(i + 1).padStart(2, "0")}</span>
+                  <NordiaMark className="h-16 w-auto self-end" light="var(--color-paper)" dark="var(--color-flame-500)" />
+                  <span className="rotulo max-w-[18ch] text-paper/55">SOLUÇÃO FEITA PARA O SEU PROCESSO</span>
                 </div>
               </Placa>
 

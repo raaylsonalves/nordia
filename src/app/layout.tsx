@@ -1,36 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Montserrat } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
-/**
- * Display face, matched to the Instagram post in references/.
- * The reference is a raster image, so this is a visual match rather than a
- * confirmed identification — the giveaways were the double-storey "a" (which
- * rules out Poppins/Futura), the tall x-height and the heavy negative tracking.
- * Swapping families later is a one-line change here plus --font-display below.
- */
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  display: "swap",
-});
-
-/**
- * Utility face: the micro-labels, numbering and data readouts. A monospace is
- * what makes an index of small numbers read as an index rather than as small
- * body text.
- */
-const mono = JetBrains_Mono({
-  variable: "--font-jetbrains",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+const rethink = localFont({
+  src: [
+    { path: "../../public/fonts/rethink-sans-regular.ttf", weight: "400", style: "normal" },
+    { path: "../../public/fonts/rethink-sans-semibold.ttf", weight: "600", style: "normal" },
+  ],
+  variable: "--font-rethink",
   display: "swap",
 });
 
@@ -74,16 +51,11 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // As variáveis das fontes ficam no <html>, não no <body>: --font-sans e
-    // companhia são declaradas em :root e apontam para var(--font-inter). Se
-    // --font-inter só existisse no <body>, a substituição aconteceria em :root,
-    // onde ela não existe, e as três famílias cairiam caladas na sans do
-    // sistema — o site inteiro.
-    <html
-      lang="pt-BR"
-      className={`${inter.variable} ${montserrat.variable} ${mono.variable}`}
-    >
-      <body>{children}</body>
+    <html lang="pt-BR" className={rethink.variable}>
+      <body>
+        <noscript><style>{`.n-hero-visual { transform: none; } .n-hero-rail { display: none; }`}</style></noscript>
+        {children}
+      </body>
     </html>
   );
 }

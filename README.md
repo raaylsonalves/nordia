@@ -6,7 +6,7 @@ Site institucional e material de marca da NORDIA.
 
 - **Next.js 16** (App Router) + **React 19** + **TypeScript**
 - **Tailwind v4** — tokens em `src/app/globals.css`
-- **Motion** (Framer Motion v12) para animação
+- **GSAP** para as animações da página inicial; Motion segue instalado para componentes preservados
 - **shadcn/ui** configurado (`components.json`), com o registry do **Kokonut UI** habilitado
 - **HyperFrames** (Apache 2.0) para vídeo — projeto em `brand-video/`
 
@@ -18,15 +18,15 @@ npm run lint
 
 ## Marca
 
-A logo é o "N" bipartido: uma metade clara, uma escura, sobre laranja. Essa
-divisão é a linguagem visual do site — use-a para contrastar "antes/depois",
-"manual/automatizado". Não decore em volta dela.
+A logo é o "N" bipartido. A página atual usa as duas metades na abertura e o
+laranja como acento sobre um canvas cinza claro. A direção visual está descrita
+em `design/BRIEF.md`, `design/REFERENCE.md` e `design/ADR-001.md`.
 
 | Token   | Valor     | Onde                        |
 | ------- | --------- | --------------------------- |
 | flame   | `#f74b01` | primária, amostrada da logo |
-| ink     | `#121110` | metade escura do "N"        |
-| paper   | `#f5f4f3` | metade clara do "N"         |
+| ink     | `#000000` | títulos e textos           |
+| paper   | `#f0f0f0` | canvas principal           |
 
 > O laranja antigo era `#ff6600`. O novo é visivelmente mais vermelho — não
 > misture os dois.
@@ -55,7 +55,7 @@ Vão para `src/components/kokonutui/`. Licença MIT, modelo copy-paste-and-own �
 **os arquivos são nossos depois de instalados**. Rodar `add` de novo sobrescreve
 as adaptações; cada arquivo tem no topo a lista do que foi mudado.
 
-Em uso:
+Componentes preservados de explorações anteriores, fora da página inicial atual:
 
 O registry usa **namespace** (`@kokonutui/...`), gravado em `components.json`.
 A forma por URL (`https://kokonutui.com/r/<nome>.json`) só enxerga parte do
@@ -118,11 +118,9 @@ número da versão muda e essa entrada do PATH quebra — é preciso reapontá-l
 
 ## Motion e hidratação
 
-Não use `useReducedMotion()` para trocar o `initial` de um componente animado:
-o hook resolve para `null` no servidor e para a preferência real no cliente, o
-que faz servidor e cliente renderizarem estilos inline diferentes e quebra a
-hidratação. Reduced motion está resolvido por CSS em `globals.css`, via o
-atributo `data-motion`.
+A coreografia atual respeita `prefers-reduced-motion` no GSAP e no CSS. O menu
+também oferece “Reduzir animações”; o controle desfaz as timelines e mostra a
+imagem final sem exigir rolagem animada. A página não depende de Lenis.
 
 ## `legacy/`
 
