@@ -14,10 +14,9 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
 
     // Vendored / non-source trees. Linting these produced ~470 findings that
-    // are not ours to fix — bundled gsap, skill fixtures, the archived site.
+    // are not ours to fix — bundled gsap and skill fixtures.
     ".agents/**",
     ".claude/**",
-    "legacy/**",
     "brand-video/**",
   ]),
 ]);
