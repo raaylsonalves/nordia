@@ -3,6 +3,7 @@ import { ArrowDown, ArrowDownRight, ArrowUpRight, Plus } from "lucide-react";
 import { NordiaMark, NORDIA_PATH_LIGHT, NORDIA_PATH_DARK } from "@/components/brand/nordia-mark";
 import { Navigation } from "@/components/nordia/navigation";
 import { Choreography } from "@/components/nordia/choreography";
+import { AnimatedKeyword } from "@/components/nordia/animated-keyword";
 
 const WHATSAPP = "https://wa.me/5585991331364";
 const services = [
@@ -21,16 +22,16 @@ export default function Home() {
       <main id="conteudo">
         <section className="n-hero" aria-labelledby="hero-title" id="inicio">
           <div className="n-hero-heading">
-            <h1 id="hero-title" className="n-hero-title">
-              <span className="n-title-window"><span className="n-title-line n-title-first">TECNOLOGIA</span></span>
+            <h1 id="hero-title" className="n-hero-title" aria-label="Negócios avançam com Landing Pages, Design, Marketing e Sistemas.">
+              <span className="n-title-window"><span className="n-title-line n-title-first">NEGÓCIOS</span></span>
               <span className="n-title-window"><span className="n-title-line n-title-middle">
                 <svg className="n-hero-mark" viewBox="-50 -30 420 474" aria-hidden="true">
                   <path data-mark-left d={NORDIA_PATH_LIGHT} fill="currentColor" />
                   <path data-mark-right d={NORDIA_PATH_DARK} fill="currentColor" />
                 </svg>
-                QUE MOVE
+                AVANÇAM
               </span></span>
-              <span className="n-title-window"><span className="n-title-line n-title-last">NEGÓCIOS<span className="n-period">.</span></span></span>
+              <span className="n-title-window n-title-window-keyword"><span className="n-title-line n-title-last">COM <AnimatedKeyword /></span></span>
             </h1>
             <p className="n-hero-aside">Conectamos ideias,<br />sistemas e pessoas.<br />Para o seu negócio<br />seguir em frente.</p>
           </div>
