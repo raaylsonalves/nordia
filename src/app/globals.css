@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "lenis/dist/lenis.css";
 
 @theme inline {
   --font-sans: var(--font-rethink), Arial, sans-serif;
@@ -354,3 +355,69 @@ html[data-quiet="true"] { scroll-behavior: auto; }
 html[data-quiet="true"] .n-hero-visual { transform: none; }
 html[data-quiet="true"] *, html[data-quiet="true"] *::before, html[data-quiet="true"] *::after { animation: none !important; transition: none !important; }
 html[data-quiet="true"] .n-keyword-frame, html[data-quiet="true"] .n-keyword-toolbar, html[data-quiet="true"] .n-keyword-cursor, html[data-quiet="true"] .n-keyword-mark, html[data-quiet="true"] .n-keyword-code { display: none; }
+
+/* Scroll study: isolated to sections 01 and 02 in this preview copy. */
+.n-about { overflow: clip; padding-top: 100px; padding-bottom: 110px; }
+.n-essence-scene { padding-block: 24px 46px; position: relative; min-height: 90svh; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+.n-story-wipe { visibility: hidden; position: absolute; z-index: 2; inset: 5% 0 10%; background: var(--n-accent); display: flex; align-items: center; justify-content: space-between; padding: clamp(24px, 4vw, 70px); overflow: hidden; }
+.n-story-wipe > svg { width: 20%; max-height: 65%; overflow: visible; }
+.n-story-wipe p { margin: 0; font-size: clamp(34px, 6.5vw, 100px); font-weight: 600; line-height: .96; letter-spacing: -.055em; }
+.n-story-wipe p span { color: var(--n-canvas); }
+.n-solutions-scene { position: relative; }
+.n-solutions-scene.is-story { height: 100svh; overflow: hidden; }
+.n-solutions-scene.is-story .n-section-heading { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: stretch; margin: 0; }
+.n-solutions-scene.is-story .n-work-pair { position: absolute; inset: 7% 3%; align-items: center; grid-template-columns: 1.25fr 1fr; }
+.n-solutions-scene.is-story .n-work-secondary { padding-top: 50px; }
+.n-solutions-scene.is-story .n-work-image { height: 65svh; aspect-ratio: auto; }
+.n-solutions-scene.is-story .n-brand-study { height: 58svh; aspect-ratio: auto; }
+html.lenis { scroll-behavior: auto; }
+.n-about-title { font-size: clamp(50px, 8.7vw, 138px); margin-top: 55px; line-height: 1.04; }
+.n-essence-line { display: block; width: fit-content; }
+.n-essence-middle { margin-left: 24%; display: flex; gap: .35em; align-items: center; color: var(--n-accent); }
+.n-essence-middle svg { width: .85em; height: .85em; stroke-width: 1.25; }
+.n-essence-last { font-size: .88em; }
+.n-essence-track { display: flex; align-items: center; gap: 24px; font-size: 11px; margin-top: 45px; }
+.n-essence-rule { height: 1px; background: var(--n-accent); flex: 1; transform-origin: left; }
+.n-about-bottom { grid-template-columns: 1fr 1.35fr; gap: clamp(32px, 7vw, 110px); align-items: center; margin-top: 20px; }
+.n-essence-art { background: var(--n-accent); aspect-ratio: 1.1; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+.n-essence-art > span:first-child { font-size: 11px; }
+.n-essence-art .n-about-mark { width: 34%; height: auto; margin: 20px auto; display: block; overflow: visible; }
+.n-essence-art-bottom { font-size: clamp(20px, 2vw, 30px); line-height: 1.05; letter-spacing: -.035em; display: flex; align-items: end; justify-content: space-between; }
+.n-essence-art-bottom svg { width: 36px; height: 36px; stroke-width: 1.2; }
+.n-capabilities { --n-muted: #b6b6b6; --n-line: #454545; background: var(--n-ink); color: var(--n-canvas); padding-top: 40px; overflow: clip; }
+.n-capabilities .n-section-kicker > span:first-child { color: var(--n-accent); }
+.n-capabilities .n-section-heading { display: block; margin-top: 76px; margin-bottom: 76px; }
+.n-services-line { display: block; }
+.n-capabilities .n-display { font-size: clamp(48px, 7.7vw, 122px); line-height: 1; }
+.n-capabilities .n-section-heading > p { margin: 32px 0 0 57%; color: var(--n-muted); }
+.n-capabilities .n-work-pair { gap: clamp(24px, 5vw, 80px); }
+.n-capabilities .n-work-secondary { padding-top: 150px; }
+.n-capabilities .n-brand-study { color: var(--n-ink); }
+.n-capabilities .n-work-image { aspect-ratio: .98; }
+.n-capabilities .n-work-stamp { background: #0009; padding: 10px 12px; }
+.n-capabilities .n-services { margin-top: 125px; }
+.n-capabilities .n-service-intro { color: var(--n-muted); }
+.n-capabilities .n-service-intro svg { color: var(--n-accent); }
+.n-capabilities .n-service summary { padding-block: 34px; }
+.n-capabilities .n-service summary h3 { font-size: clamp(24px, 3.2vw, 50px); }
+.n-capabilities .n-service[open] h3, .n-capabilities .n-service summary:hover h3, .n-capabilities .n-plus { color: var(--n-accent); }
+@media (max-width: 700px) {
+  .n-about { padding-top: 72px; padding-bottom: 65px; }
+  .n-essence-scene { padding-top: 0; padding-bottom: 28px; }
+  .n-about-title { font-size: 10.1vw; margin-top: 38px; line-height: 1.15; }
+  .n-essence-middle { margin-left: 25%; }
+  .n-essence-last { font-size: 1em; }
+  .n-essence-track { gap: 12px; margin-top: 28px; font-size: 10px; }
+  .n-about-bottom { display: grid; grid-template-columns: 1fr; gap: 32px; margin-top: 10px; }
+  .n-essence-art { width: 85%; aspect-ratio: 1.25; padding: 20px; }
+  .n-essence-art .n-about-mark { width: 26%; margin-block: 18px; }
+  .n-capabilities { padding-top: 30px; }
+  .n-capabilities .n-display { font-size: 10vw; line-height: 1.08; }
+  .n-capabilities .n-section-heading { margin-block: 44px 36px; }
+  .n-capabilities .n-section-heading > p { margin: 24px 0 0 18%; }
+  .n-capabilities .n-work-secondary { padding-top: 0; }
+  .n-capabilities .n-work-pair { gap: 40px; }
+  .n-capabilities .n-services { margin-top: 64px; }
+  .n-capabilities .n-service summary { padding-block: 27px; }
+  .n-capabilities .n-service summary h3 { font-size: clamp(21px, 6vw, 32px); }
+}
