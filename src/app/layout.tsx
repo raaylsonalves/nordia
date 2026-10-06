@@ -54,7 +54,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={rethink.variable}>
       <body>
-        <noscript><style>{`.n-hero-visual { transform: none; } .n-hero-rail { display: none; }`}</style></noscript>
         {children}
         <Analytics />
       </body>

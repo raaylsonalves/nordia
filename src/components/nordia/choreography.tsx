@@ -29,10 +29,32 @@ export function Choreography() {
           gsap.from("[data-mark-left]", { x: -60, y: 45, duration: 1.25, delay: 0.35, ease: "power3.out" });
           gsap.from("[data-mark-right]", { x: 60, y: -45, duration: 1.25, delay: 0.35, ease: "power3.out" });
         }
-        gsap.fromTo(".n-hero-visual", { scale: desktop ? 0.66 : 0.96 }, { scale: 1, ease: "none", scrollTrigger: { trigger: ".n-hero-stage", start: "top 48%", end: desktop ? "top -12%" : "top 15%", scrub: 0.7, invalidateOnRefresh: true } });
         if (desktop) {
-          gsap.to(".n-hero-rail", { opacity: 0, y: -18, ease: "none", scrollTrigger: { trigger: ".n-hero-stage", start: "top 38%", end: "top 18%", scrub: true } });
           gsap.fromTo(".n-work-image img", { yPercent: -5, scale: 1.12 }, { yPercent: 5, scale: 1.12, ease: "none", scrollTrigger: { trigger: ".n-work-image", start: "top bottom", end: "bottom top", scrub: 0.6 } });
+        }
+        const reel = document.querySelector<HTMLElement>(".n-reel");
+        const reelStage = document.querySelector<HTMLElement>(".n-reel-section");
+        if (reel && reelStage) {
+          const startingWidth = () => Math.min(
+            1700,
+            window.innerWidth - (desktop ? 2 * parseFloat(getComputedStyle(reelStage).paddingLeft) : 24),
+            window.innerHeight * (desktop ? 16 / 9 * 0.85 : 9 / 16 * 0.8),
+          );
+          gsap.fromTo(reel,
+            { width: startingWidth, height: () => startingWidth() * (desktop ? 9 / 16 : 16 / 9) },
+            {
+              width: () => window.innerWidth,
+              height: () => window.innerHeight,
+              ease: "none",
+              scrollTrigger: {
+                trigger: ".n-reel-scroll",
+                start: "top top",
+                end: () => `+=${window.innerHeight * 0.8}`,
+                scrub: 0.45,
+                invalidateOnRefresh: true,
+              },
+            },
+          );
         }
         gsap.from("[data-study-left]", { x: -22, y: 26, ease: "none", scrollTrigger: { trigger: ".n-brand-study", start: "top 85%", end: "center 45%", scrub: 0.5 } });
         gsap.from("[data-study-right]", { x: 22, y: -26, ease: "none", scrollTrigger: { trigger: ".n-brand-study", start: "top 85%", end: "center 45%", scrub: 0.5 } });
