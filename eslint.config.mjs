@@ -18,6 +18,8 @@ const eslintConfig = defineConfig([
     ".agents/**",
     ".claude/**",
     "brand-video/**",
+    "references/**",
+    "videos/**",
   ]),
 ]);
 

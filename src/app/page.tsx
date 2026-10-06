@@ -4,6 +4,7 @@ import { NordiaMark, NORDIA_PATH_LIGHT, NORDIA_PATH_DARK } from "@/components/br
 import { Navigation } from "@/components/nordia/navigation";
 import { Choreography } from "@/components/nordia/choreography";
 import { AnimatedKeyword } from "@/components/nordia/animated-keyword";
+import { MotionReel } from "@/components/nordia/motion-reel";
 
 const WHATSAPP = "https://wa.me/5585991331364";
 const services = [
@@ -35,30 +36,41 @@ export default function Home() {
             </h1>
             <p className="n-hero-aside">Conectamos ideias,<br />sistemas e pessoas.<br />Para o seu negócio<br />seguir em frente.</p>
           </div>
-          <div className="n-hero-stage">
-            <div className="n-hero-rail n-hero-rail-left"><span className="n-caption">Tecnologia com propósito.</span><span>Sistemas sob medida<br />Integrações & automações<br />Experiências digitais</span></div>
-            <div className="n-hero-rail n-hero-rail-right"><a className="n-pill" href="#solucoes">Explore o que fazemos <ArrowDown size={16} /></a></div>
-            <figure className="n-hero-visual">
-              <Image src="/images/nordia-connections.webp" alt="Peças de alumínio interligadas por uma fita laranja, uma representação da conexão entre sistemas." fill sizes="(max-width: 700px) 100vw, 96vw" preload quality={90} />
-              <div className="n-image-tag" aria-hidden="true"><span>Conexões que fazem avançar.</span><ArrowDownRight size={26} /></div>
-            </figure>
+          <div className="n-hero-bottom n-gutter">
+            <div className="n-hero-rails">
+              <div className="n-hero-rail-left"><span className="n-caption">Tecnologia com propósito.</span><span>Sistemas sob medida<br />Integrações & automações<br />Experiências digitais</span></div>
+              <div className="n-hero-rail-right"><a className="n-pill" href="#solucoes">Explore o que fazemos <ArrowDown size={16} /></a></div>
+            </div>
+            <div className="n-hero-caption"><span>Da ideia à experiência.</span><span>NORDIA — Tecnologia com propósito</span></div>
           </div>
-          <div className="n-hero-caption n-gutter"><span>Da complexidade à conexão.</span><span>NORDIA — Tecnologia com propósito</span></div>
         </section>
-        <section className="n-about n-gutter" id="problema" aria-labelledby="about-title">
+        <section className="n-reel-section" aria-label="Nordia em movimento">
+          <div className="n-reel-scroll">
+            <div className="n-reel-sticky">
+              <MotionReel />
+            </div>
+          </div>
+        </section>
+        <section className="n-about" id="problema" aria-labelledby="about-title">
           <div className="n-section-kicker"><span>01 / Nossa essência</span><span>Clareza antes do código.</span></div>
-          <h2 id="about-title" className="n-display n-about-title" data-enter>MENOS ATRITO.<br /><span className="n-indented">MAIS</span><br />POSSIBILIDADES<span className="n-period">.</span></h2>
+          <div className="n-essence-scene">
+            <div className="n-story-wipe" aria-hidden="true"><NordiaMark light="var(--n-canvas)" dark="var(--n-ink)" /><p>TECNOLOGIA<br />CERTA.<br /><span>NEGÓCIOS EM<br />MOVIMENTO.</span></p></div>
+            <h2 id="about-title" className="n-display n-about-title"><span className="n-essence-line">MENOS ATRITO.</span><span className="n-essence-line n-essence-middle">MAIS <ArrowUpRight aria-hidden="true" /></span><span className="n-essence-line n-essence-last">POSSIBILIDADES<span className="n-period">.</span></span></h2>
+            <div className="n-essence-track" aria-hidden="true"><span>Da complexidade</span><span className="n-essence-rule" /><span>à conexão ↗</span></div>
+          </div>
           <div className="n-about-bottom">
-            <NordiaMark className="n-about-mark" light="var(--n-ink)" dark="var(--n-accent)" />
+            <div className="n-essence-art" aria-hidden="true"><span>Clareza. Conexão. Movimento.</span><NordiaMark className="n-about-mark" light="var(--n-canvas)" dark="var(--n-ink)" /><span className="n-essence-art-bottom">O próximo passo<br />começa aqui. <ArrowUpRight /></span></div>
             <div className="n-about-copy"><p className="n-lead">Seu negócio não precisa de mais tecnologia. Precisa da tecnologia certa.</p><div className="n-body-columns"><p>Planilhas que não terminam. Sistemas que não conversam. Tempo gasto com o que poderia ser simples. A gente começa entendendo tudo isso.</p><p>Depois, transforma essa complexidade em soluções digitais sob medida. Com menos etapas no caminho e mais espaço para o seu negócio crescer.</p></div><a className="n-text-link" href="#conversar">Vamos conversar <ArrowUpRight size={19} /></a></div>
           </div>
         </section>
         <section className="n-capabilities n-gutter" id="solucoes" aria-labelledby="services-title">
           <div className="n-section-kicker"><span>02 / O que fazemos</span><span>Feito para a sua realidade.</span></div>
-          <div className="n-section-heading"><h2 id="services-title" className="n-display" data-enter>BOAS IDEIAS.<br />SOLUÇÕES REAIS.</h2><p>Do primeiro desenho à operação.<br />Construímos as conexões que<br />o seu negócio precisa.</p></div>
+          <div className="n-solutions-scene">
+          <div className="n-section-heading"><h2 id="services-title" className="n-display"><span className="n-services-line">BOAS IDEIAS.</span><span className="n-services-line">SOLUÇÕES <span className="n-period">REAIS.</span></span></h2><p>Do primeiro desenho à operação.<br />Construímos as conexões que<br />o seu negócio precisa.</p></div>
           <div className="n-work-pair">
             <figure className="n-work n-work-primary"><div className="n-work-image"><Image src="/images/nordia-systems.webp" alt="Módulos de metal conectados por uma estrutura laranja contínua." fill sizes="(max-width: 700px) 100vw, 60vw" quality={85} /><span className="n-work-stamp">Tudo conectado.<ArrowUpRight size={22} /></span></div><figcaption><span>Do isolado ao integrado.</span><span>Integrações & automações</span></figcaption></figure>
             <figure className="n-work n-work-secondary"><div className="n-brand-study" aria-hidden="true"><span className="n-study-label">Pensado para encaixar.</span><svg viewBox="0 0 320 414" className="n-study-mark"><path data-study-left d={NORDIA_PATH_LIGHT} fill="#f0f0f0" /><path data-study-right d={NORDIA_PATH_DARK} fill="#111111" /></svg><span className="n-study-bottom">Seu negócio.<br />Suas possibilidades.<span>↗</span></span></div><figcaption><span>Nada de fórmula pronta.</span><span>Sistemas sob medida</span></figcaption></figure>
+          </div>
           </div>
           <div className="n-services"><p className="n-service-intro">Cada desafio pede<br />uma solução própria.<ArrowDownRight size={36} strokeWidth={1.2} /></p><div className="n-service-list">{services.map((service, i) => <details key={service.title} className="n-service" name="services" open={i === 0}><summary><span className="n-index">0{i + 1}</span><h3>{service.title}</h3><Plus className="n-plus" size={25} strokeWidth={1.4} /></summary><div className="n-service-description"><p>{service.text}</p><span>{service.tags}</span></div></details>)}</div></div>
         </section>

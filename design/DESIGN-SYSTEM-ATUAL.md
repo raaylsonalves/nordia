@@ -1,12 +1,12 @@
 # Nordia — design system e plano de conclusão
 
-Estado: referência de trabalho da home atual, 24/09/2026. Este documento descreve o que **já está implementado** e o que **ainda precisa de decisão ou implementação**. Para valores exatos em execução, prevalecem `src/app/globals.css`, `src/app/page.tsx` e os componentes em `src/components/nordia/`.
+Estado: referência de trabalho da home atual, 05/10/2026. Este documento descreve o que **já está implementado** e o que **ainda precisa de decisão ou implementação**. Para valores exatos em execução, prevalecem `src/app/globals.css`, `src/app/page.tsx` e os componentes em `src/components/nordia/`.
 
 ## Direção visual
 
-Site institucional de um estúdio de tecnologia: editorial, amplo, tipográfico e direto. A referência Wemotion orienta escala, ritmo e composição; não determina marca, textos ou elementos proprietários da Nordia. A identidade continua sendo o N bipartido e o laranja da marca. Imagens de metal e conexão são estudos conceituais, não projetos de clientes.
+Site institucional de um estúdio de tecnologia: editorial, amplo, tipográfico e direto. A referência Wemotion orienta escala, ritmo e composição; não determina marca, textos ou elementos proprietários da Nordia. A identidade continua sendo o N bipartido e o laranja da marca. O estudo de metal na seção de soluções é conceitual; depois do Hero em tela cheia vem o motion graphic vetorial da Nordia.
 
-Princípio de composição: uma mensagem forte por cena, contraste entre tipografia monumental e microtexto, mídia retangular, separadores finos e CTAs em pílula. Evitar grids de cards genéricos, estatísticas inventadas, carrosséis e rolagem sequestrada.
+Princípio de composição: uma mensagem forte por cena, contraste entre tipografia monumental e microtexto, mídia retangular, separadores finos e CTAs em pílula. Evitar grids de cards genéricos, estatísticas inventadas e carrosséis automáticos. O vídeo tem uma passagem de scroll com `position: sticky`: cresce de um quadro 16:9 no desktop ou 9:16 no celular ao viewport, e a seção seguinte sobe sobre ele. A rolagem continua nativa, sem captura ou trava.
 
 ## Tokens e regras
 
@@ -29,18 +29,20 @@ Espaçamento: preservar respiro amplo entre seções, conteúdo em fluxo natural
 ## Estrutura atual da home
 
 1. Navegação compacta com marca, âncoras e menu em Dialog. O menu inclui controle de redução de movimento.
-2. Hero: “Negócios avançam com …”, N bipartido, palavra dinâmica, texto de apoio e imagem conceitual de conexões.
-3. Essência: problema de negócio, proposta de clareza e CTA.
-4. Soluções: dupla visual assimétrica e quatro serviços em `<details>`: sistemas sob medida, integrações, automações e experiências digitais.
-5. Processo: entender, construir, evoluir.
-6. Conversa e rodapé: WhatsApp, e-mail e Instagram.
+2. Hero: “Negócios avançam com …”, N bipartido, palavra dinâmica, texto de apoio e CTA. O conteúdo ocupa o viewport sob a navegação.
+3. Motion graphic de 10 s abaixo do Hero: começa em quadro 16:9 no desktop e 9:16 no mobile, expande no scroll e termina coberto pela seção seguinte.
+4. Essência: problema de negócio, proposta de clareza e CTA.
+5. Soluções: dupla visual assimétrica e quatro serviços em `<details>`: sistemas sob medida, integrações, automações e experiências digitais.
+6. Processo: entender, construir, evoluir.
+7. Conversa e rodapé: WhatsApp, e-mail e Instagram.
 
-Os componentes ativos dessa experiência são `Navigation`, `Choreography`, `AnimatedKeyword` e `NordiaMark`. Toda nova seção deve partir desse sistema visual, sem reintroduzir as explorações removidas.
+Os componentes ativos dessa experiência são `Navigation`, `Choreography`, `AnimatedKeyword`, `MotionReel` e `NordiaMark`. Toda nova seção deve partir desse sistema visual, sem reintroduzir as explorações removidas.
 
 ## Linguagem de movimento
 
 - Entrada do Hero: linhas surgem em sequência e as duas metades do N se encontram. GSAP em `choreography.tsx`.
-- Imagem central: escala delimitada de aproximadamente `.66` até `1` no desktop durante rolagem nativa; `.96` até `1` no mobile. Não há pin nem espaço vazio artificial.
+- Vídeo abaixo do Hero: motion graphic original de 10 s, 60 fps, com composições próprias 16:9 (1920×1080) e 9:16 (1080×1920). A sequência aprovada usa faixas curvas para “Bem-vindo a uma nova forma de avançar”, reorganiza a frase em blocos, revela a marca Nordia e termina com anéis e esferas. Usa Rethink Sans, preto/cinza/laranja do site e o N vetorial real. O player escolhe a versão vertical até 700 px, prefere WebM sem áudio com MP4 silencioso de fallback e carrega quando entra no viewport. Arquivos de entrega: 1,68 MB/1,44 MB em WebM (desktop/mobile) e 1,63 MB/1,35 MB em MP4. A superfície do vídeo não mostra controles; o controle global de movimento do site e `prefers-reduced-motion` param a reprodução automática. Masters com som permanecem em `videos/nordia-identity-motion-20261005/renders/`.
+- Passagem do vídeo: CTA do Hero ocupa um viewport abaixo da navegação; o vídeo começa na seção seguinte. Essa seção tem 300svh com palco sticky de 100svh. Nos primeiros 80svh de rolagem, o quadro inicial se expande até o viewport, mantém uma breve pausa e a seção “Nossa essência” sobe por cima ao longo dos últimos 100svh, cobrindo o vídeo antes de ele sair do sticky. O vídeo mantém o enquadramento inteiro com `object-fit: contain` e fundo preto quando a proporção do viewport difere. Em movimento reduzido, a seção volta ao fluxo estático sem sobreposição nem expansão. A fonte editável, trilhas e timeline do master estão em `videos/nordia-identity-motion-20261005/`.
 - Soluções: parallax discreto da imagem no desktop e encontro das metades do N no estudo de marca.
 - Títulos secundários: entrada única, curta, na primeira aproximação ao viewport.
 - Palavra dinâmica: sequência “selecionar → editar → substituir → confirmar”, sem typewriter. Ordem: Landing Pages, Design, Marketing, Sistemas. Fases-base: pausa 1650 ms, cursor 320 ms, seleção 320 ms, edição 520 ms, estilo 500 ms, troca 550 ms, confirmação 260 ms. Em Sistemas, edição/estilo duram 700/650 ms para permitir leitura do mini-editor. Easing principal `cubic-bezier(0.22, 1, 0.36, 1)`.
@@ -53,7 +55,10 @@ Os componentes ativos dessa experiência são `Navigation`, `Choreography`, `Ani
 | Local | Função |
 | --- | --- |
 | `public/brand/` | Marca SVG usada pela página |
-| `public/images/` | WebP servidos na home |
+| `public/images/` | WebP ativo do estudo de soluções e cinco PNGs do MacBook preservados, fora da home |
+| `public/videos/` | WebM/MP4 horizontal e vertical, posters e legendas em português do motion graphic atual; arquivos anteriores preservados sem uso na home |
+| `videos/nordia-identity-motion-20261005/` | Fonte editável do filme atual, áudio, timeline, roteiro e evidências de revisão |
+| `videos/nordia-motion-referencia-20261004/` | Estudo de motion anterior, não publicado na home |
 | `public/fonts/` | Tipografia local e licença |
 | `design/sources/` | Fontes em alta resolução dos estudos visuais atuais |
 | `references/` | Referências fornecidas e arquivos de marca; não apagar na limpeza do legado |
@@ -65,6 +70,7 @@ Vídeos do Pinterest enviados na conversa são referências de linguagem de movi
 ### Decisões de conteúdo e marca
 
 - [ ] Confirmar com a Nordia a oferta final e se “Landing Pages”, “Design” e “Marketing” correspondem de fato aos serviços vendidos; a lista detalhada atual enfatiza sistemas, integrações e automações.
+- [x] Aprovar o roteiro do novo filme de 10 segundos e sua frase “Bem-vindo a uma nova forma de avançar”. Selecting Motors não aparece na home; seus mockups foram preservados para referência.
 - [ ] Aprovar copy, canais de contato e ordem das seções com a pessoa responsável pela marca.
 - [ ] Substituir ou complementar os estudos conceituais por materiais reais quando houver fotos, cases e autorização de uso. Não inventar clientes, métricas ou depoimentos.
 
